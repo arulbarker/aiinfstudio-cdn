@@ -76,6 +76,8 @@
                     'pt.tip1': 'Scene "Acak" bikin feed terlihat hidup dan tidak monoton.',
                     'pt.tip2': 'Rasio 9:16 paling pas untuk Reels, TikTok, dan Story.',
                     'pt.tip3': 'Kalau wajah kurang mirip, klik Regenerate di kartu foto itu.',
+                    'pt.outfit-label': 'Outfit (Opsional)',
+                    'pt.outfit-ph': 'contoh: gamis hitam elegan / kaos putih + jeans',
                     'vp.title': 'Prompt Video',
                     'vp.mode-natural': 'Natural',
                     'vp.mode-niche': 'Konten Niche',
@@ -161,6 +163,8 @@
                     'pt.tip1': 'The "Random" scene keeps your feed varied and alive.',
                     'pt.tip2': 'The 9:16 ratio fits Reels, TikTok, and Stories best.',
                     'pt.tip3': 'If the face looks off, click Regenerate on that photo card.',
+                    'pt.outfit-label': 'Outfit (Optional)',
+                    'pt.outfit-ph': 'e.g. elegant black dress / white tee + jeans',
                     'vp.title': 'Video Prompt',
                     'vp.mode-natural': 'Natural',
                     'vp.mode-niche': 'Niche Content',
@@ -246,6 +250,8 @@
                     'pt.tip1': 'Scene "Rawak" menjadikan feed nampak hidup dan tidak monoton.',
                     'pt.tip2': 'Nisbah 9:16 paling sesuai untuk Reels, TikTok dan Story.',
                     'pt.tip3': 'Jika wajah kurang mirip, klik Regenerate pada kad foto itu.',
+                    'pt.outfit-label': 'Outfit (Pilihan)',
+                    'pt.outfit-ph': 'cth: jubah hitam elegan / t-shirt putih + jeans',
                     'vp.title': 'Prompt Video',
                     'vp.mode-natural': 'Natural',
                     'vp.mode-niche': 'Kandungan Niche',
@@ -1106,11 +1112,14 @@
                 '3:4': 'portrait 3:4 format',
                 '16:9': 'wide 16:9 landscape orientation'
             };
-            function buildPhotoPrompt(scene, ratio, char) {
+            function buildPhotoPrompt(scene, ratio, char, outfit) {
                 const f = (char && char.cfg) || {};
+                const clothing = outfit
+                    ? `Wearing: ${outfit} (outfit may differ from the reference photos - only face and identity must stay the same).`
+                    : `Clothing style consistent with: ${f.style || 'modern casual clothing'}.`;
                 return `Keep the person EXACTLY as in the provided reference photos - same face, same hair, same skin tone, ` +
                     `do NOT alter the person's identity. Only change the scene: ${scene}. ` +
-                    `Clothing style consistent with: ${f.style || 'modern casual clothing'}. ` +
+                    clothing + ` ` +
                     `Candid natural moment, realistic lighting, amateur smartphone photo look, slight natural imperfection, ` +
                     `no studio pose, ${RATIO_TEXT[ratio] || RATIO_TEXT['9:16']}, no text, no watermark.`;
             }
@@ -1146,7 +1155,11 @@
                                 </div>
                             </div>
                             <div class="card">
-                                <div class="flex items-center gap-3 mb-4"><span class="step-num">2</span><h3 class="font-semibold text-gray-800" data-i18n="pt.step-ratio"></h3></div>
+                                <div class="flex items-center gap-3 mb-4"><span class="step-num">2</span><h3 class="font-semibold text-gray-800" data-i18n="pt.outfit-label"></h3></div>
+                                <input id="${p}-outfit" type="text" maxlength="120" class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm" data-i18n-placeholder="pt.outfit-ph" placeholder="contoh: gamis hitam elegan / kaos putih + jeans">
+                            </div>
+                            <div class="card">
+                                <div class="flex items-center gap-3 mb-4"><span class="step-num">3</span><h3 class="font-semibold text-gray-800" data-i18n="pt.step-ratio"></h3></div>
                                 <div class="grid grid-cols-4 gap-2" data-ratio-group>
                                     <button type="button" class="option-btn selected" data-ratio="9:16">9:16</button>
                                     <button type="button" class="option-btn" data-ratio="1:1">1:1</button>
@@ -1155,7 +1168,7 @@
                                 </div>
                             </div>
                             <div class="card">
-                                <div class="flex items-center gap-3 mb-4"><span class="step-num">3</span><h3 class="font-semibold text-gray-800" data-i18n="pt.step-count"></h3></div>
+                                <div class="flex items-center gap-3 mb-4"><span class="step-num">4</span><h3 class="font-semibold text-gray-800" data-i18n="pt.step-count"></h3></div>
                                 <div class="grid grid-cols-5 gap-2" data-count-group>
                                     ${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => `<button type="button" class="option-btn${n === 4 ? ' selected' : ''}" data-count="${n}">${n}</button>`).join('')}
                                 </div>
@@ -1282,14 +1295,15 @@
                         busy = false;
                         return;
                     }
+                    const outfit = document.getElementById(`${p}-outfit`).value.trim();
                     results = [];
                     emptyState.classList.add('hidden');
                     dlAll.classList.add('hidden');
                     grid.innerHTML = picks.map((_, i) => spinnerCard(i + 1)).join('');
 
                     async function genOne(index) {
-                        const b64 = await genImageWithRefs(buildPhotoPrompt(picks[index - 1], selectedRatio, char), [refFront, refBody]);
-                        results[index - 1] = { b64, scene: picks[index - 1], filename: `${p}-${index}.png` };
+                        const b64 = await genImageWithRefs(buildPhotoPrompt(picks[index - 1], selectedRatio, char, outfit), [refFront, refBody]);
+                        results[index - 1] = { b64, scene: picks[index - 1], outfit, filename: `${p}-${index}.png` };
                         const card = document.getElementById(`${p}-card-${index}`);
                         if (card) card.innerHTML = cardInner(index, b64);
                     }
@@ -1343,8 +1357,8 @@
                             const char2 = await window.getActiveChar();
                             const rf = await window.blobToB64(char2.blobs[0]);
                             const rb = await window.blobToB64(char2.blobs[4]);
-                            const b64 = await genImageWithRefs(buildPhotoPrompt(r.scene, selectedRatio, char2), [rf, rb]);
-                            results[idx] = { b64, scene: r.scene, filename: r.filename };
+                            const b64 = await genImageWithRefs(buildPhotoPrompt(r.scene, selectedRatio, char2, r.outfit || ''), [rf, rb]);
+                            results[idx] = { b64, scene: r.scene, outfit: r.outfit, filename: r.filename };
                             card.innerHTML = cardInner(idx + 1, b64);
                         } catch (err) {
                             if (window.logDebug) window.logDebug(p + '-regen', String(err));
@@ -1427,9 +1441,16 @@
                     return `You are a prompt writer for image-to-video AI tools (Veo, Kling). ` +
                         `Based on this photo description: "${scene}". The person is a social media influencer ` +
                         `with the niche "${nicheVal}". Write an image-to-video prompt in English where the person ` +
-                        `speaks naturally to the camera with subtle gestures, keeping identity, outfit and background ` +
-                        `exactly as the source image. Then write the exact short spoken script (2-3 sentences, ` +
-                        `matching the "${nicheVal}" niche, e.g. a wisdom quote or a practical tip) in ${langName}. ` +
+                        `speaks to the camera like a relaxed everyday conversation with a close friend: ` +
+                        `slow, calm, unhurried pace; natural pauses between phrases; soft warm tone; ` +
+                        `occasionally looks away briefly and smiles like in real conversation; subtle relaxed gestures. ` +
+                        `Explicitly state in the prompt: "the person speaks slowly and calmly, never rushed, ` +
+                        `with natural breathing pauses between sentences". ` +
+                        `Keep identity, outfit and background exactly as the source image. ` +
+                        `Then write the exact short spoken script in ${langName}, matching the "${nicheVal}" niche: ` +
+                        `maximum 2 short sentences (about 15-20 words total) so the delivery fits comfortably without rushing. ` +
+                        `Use simple everyday conversational words that are easy to say aloud - NOT formal or poetic written language. ` +
+                        `Add "..." between phrases to mark natural pauses. ` +
                         `Format:\nPROMPT:\n<prompt>\nSCRIPT:\n<script>\nOutput nothing else.`;
                 }
 
@@ -1543,8 +1564,16 @@
             window.escHtml = function (s) {
                 return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
             };
-            window.APP_VERSION = '1.0';
+            window.APP_VERSION = '1.1';
             window.CHANGELOG = [
+                { version: '1.1', date: '17 Sep 2026', changes: [
+                    { id: 'Outfit custom (opsional) di setiap sesi foto - outfit bisa disesuaikan tanpa mengubah wajah karakter',
+                      en: 'Custom outfit (optional) in every photo session - adjust the outfit without changing the character\'s face',
+                      ms: 'Outfit tersuai (pilihan) dalam setiap sesi foto - outfit boleh diubah tanpa mengubah wajah watak' },
+                    { id: 'Prompt video mode bicara dibuat lebih natural: pelan, tidak terburu-buru, jeda napas alami, script pendek gaya obrolan',
+                      en: 'Talking video prompts are now more natural: slow, unhurried, natural breathing pauses, short conversational script',
+                      ms: 'Prompt video mod bercakap kini lebih natural: perlahan, tidak tergesa-gesa, jeda nafas semula jadi, skrip pendek gaya perbualan' },
+                ] },
                 { version: '1.0', date: '17 Sep 2026', changes: [
                     { id: 'Rilis pertama: pembuat AI influencer (2 karakter x 5 angle, tersimpan cloud), 4 sesi foto natural, dan prompt image-to-video 2 mode',
                       en: 'First release: AI influencer creator (2 characters x 5 angles, cloud-saved), 4 natural photo sessions, and 2-mode image-to-video prompts',

@@ -2,7 +2,7 @@
 
 Auto-generated CDN assets for the AI Influencer Studio Canvas deployment.
 
-Source of truth: `index.html` in the private repo `arulbarker/canvas_ai_influencer_studio`.
+Source of truth: `index.html` in the private repo `arulbarker/canvas-ai-influencer`.
 Built by `scripts/build-cdn.mjs` in that repo. Do not edit files here by hand —
 changes will be overwritten on the next build.
 
@@ -22,4 +22,4 @@ Canvas shell references the `@main` branch URL and stays stable across
 releases — paste once. Build pipeline purges jsDelivr cache after each push
 so updates propagate within seconds.
 
-Last build: 2026-09-17T04:07:12.970Z
+Last build: 2026-09-17T12:10:39.761Z
