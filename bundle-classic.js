@@ -67,6 +67,7 @@
                     'pt.char-active': 'Karakter aktif',
                     'pt.no-char': 'Belum ada karakter. Buat dulu di menu Buat AI Influencer.',
                     'pt.step-scene': 'Pilih Scene',
+                    'pt.step-cam': 'Gaya Foto',
                     'pt.step-ratio': 'Rasio Foto',
                     'pt.step-count': 'Jumlah Foto',
                     'pt.generate': 'Generate Foto',
@@ -161,6 +162,7 @@
                     'pt.char-active': 'Active character',
                     'pt.no-char': 'No character yet. Create one in the Create AI Influencer menu.',
                     'pt.step-scene': 'Choose a Scene',
+                    'pt.step-cam': 'Photo Style',
                     'pt.step-ratio': 'Photo Ratio',
                     'pt.step-count': 'Number of Photos',
                     'pt.generate': 'Generate Photos',
@@ -255,6 +257,7 @@
                     'pt.char-active': 'Watak aktif',
                     'pt.no-char': 'Belum ada watak. Cipta dahulu di menu Cipta AI Influencer.',
                     'pt.step-scene': 'Pilih Scene',
+                    'pt.step-cam': 'Gaya Foto',
                     'pt.step-ratio': 'Nisbah Foto',
                     'pt.step-count': 'Bilangan Foto',
                     'pt.generate': 'Jana Foto',
@@ -325,6 +328,7 @@
                     'Naik Ojek Online': 'Riding an Ojek', 'Naik Motor': 'Riding a Scooter', 'Nyetir Mobil': 'Driving a Car',
                     'Naik Kereta': 'On the Train', 'Jajan Street Food': 'Street Food Run', 'Hujan-hujanan': 'Rainy Day Walk',
                     'Di Minimarket': 'At the Minimart', 'Rebahan Main HP': 'Scrolling in Bed',
+                    'Selfie Sendiri': 'Selfie (Self-Shot)', 'Difotoin Orang': 'Taken by Someone',
                     'Depan Mic Podcast': 'At the Podcast Mic', 'Ngobrol Pakai Headphone': 'Talking with Headphones',
                     'Behind the Scenes Studio': 'Studio Behind the Scenes', 'Wawancara Tamu': 'Interviewing a Guest', 'Ketawa Saat Rekaman': 'Laughing While Recording',
                     'Mirror Selfie Outfit': 'Outfit Mirror Selfie', 'Detail Outfit': 'Outfit Details', 'Selfie di Lift': 'Elevator Selfie', 'Outfit di Kafe Estetik': 'Cafe Outfit Shot',
@@ -341,6 +345,7 @@
                     'Belanja di Supermarket': 'Beli-belah di Pasar Raya',
                     'Naik Motor': 'Naik Motosikal', 'Nyetir Mobil': 'Memandu Kereta', 'Naik Kereta': 'Naik Keretapi',
                     'Jajan Street Food': 'Beli Makanan Jalanan', 'Hujan-hujanan': 'Jalan Ketika Hujan', 'Rebahan Main HP': 'Baring Main Telefon',
+                    'Difotoin Orang': 'Difotokan Orang',
                     'Ngobrol Pakai Headphone': 'Berbual Pakai Fon Kepala', 'Wawancara Tamu': 'Menemu Bual Tetamu', 'Ketawa Saat Rekaman': 'Ketawa Semasa Rakaman',
                     'Detail Outfit': 'Detail Pakaian', 'Selfie di Lift': 'Selfie di Lif',
                     'Latihan di Gym': 'Bersenam di Gym', 'Naik Gunung': 'Mendaki', 'Stretching di Taman': 'Regangan di Taman', 'Selfie Habis Workout': 'Selfie Selepas Bersenam'
@@ -1235,7 +1240,14 @@
                 '3:4': 'portrait 3:4 format',
                 '16:9': 'wide 16:9 landscape orientation'
             };
-            function buildPhotoPrompt(scene, ratio, char, outfit, productCount) {
+            const CAM_TEXT = {
+                selfie: 'Shot as a real SELFIE taken by the person themselves with their phone front camera: ' +
+                    'one arm extended toward the camera holding the phone (arm and hand partially visible at the edge of the frame), ' +
+                    'face fairly close to the lens, looking into the camera, slight high angle, ' +
+                    'natural selfie framing with mild wide-angle front-camera distortion',
+                candid: 'Candid photo taken by another person from a few steps away, natural unposed moment'
+            };
+            function buildPhotoPrompt(scene, ratio, char, outfit, productCount, cam) {
                 const f = (char && char.cfg) || {};
                 let clothing;
                 if (productCount > 0) {
@@ -1251,7 +1263,8 @@
                 return `Keep the person EXACTLY as in the first two reference photos - same face, same hair, same skin tone, ` +
                     `do NOT alter the person's identity. Only change the scene: ${scene}. ` +
                     clothing + ` ` +
-                    `Candid natural moment, realistic lighting, amateur smartphone photo look, slight natural imperfection, ` +
+                    `${CAM_TEXT[cam] || CAM_TEXT.selfie}. ` +
+                    `Realistic lighting, amateur smartphone photo look, slight natural imperfection, ` +
                     `no studio pose, ${RATIO_TEXT[ratio] || RATIO_TEXT['9:16']}, no text, no watermark.`;
             }
 
@@ -1334,7 +1347,14 @@
                                 </div>
                             </div>
                             <div class="card">
-                                <div class="flex items-center gap-3 mb-4"><span class="step-num">2</span><h3 class="font-semibold text-gray-800" data-i18n="pt.outfit-label"></h3></div>
+                                <div class="flex items-center gap-3 mb-4"><span class="step-num">2</span><h3 class="font-semibold text-gray-800" data-i18n="pt.step-cam"></h3></div>
+                                <div class="grid grid-cols-2 gap-2" data-cam-group>
+                                    <button type="button" class="option-btn selected" data-cam="selfie">Selfie Sendiri</button>
+                                    <button type="button" class="option-btn" data-cam="candid">Difotoin Orang</button>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="flex items-center gap-3 mb-4"><span class="step-num">3</span><h3 class="font-semibold text-gray-800" data-i18n="pt.outfit-label"></h3></div>
                                 <div class="flex gap-2">
                                     <input id="${p}-outfit" type="text" maxlength="120" class="flex-1 min-w-0 border border-gray-300 rounded-lg px-3 py-2.5 text-sm" data-i18n-placeholder="pt.outfit-ph" placeholder="contoh: gamis hitam elegan / kaos putih + jeans">
                                     <button type="button" id="${p}-outfit-save" class="btn-secondary rounded-lg px-3 flex-shrink-0" style="min-width:44px;" title="Simpan outfit" aria-label="Simpan outfit"><i class="fas fa-bookmark"></i></button>
@@ -1345,7 +1365,7 @@
                                 <input type="file" id="${p}-oimg-file" accept="image/*" multiple class="hidden">
                             </div>
                             <div class="card">
-                                <div class="flex items-center gap-3 mb-4"><span class="step-num">3</span><h3 class="font-semibold text-gray-800" data-i18n="pt.step-ratio"></h3></div>
+                                <div class="flex items-center gap-3 mb-4"><span class="step-num">4</span><h3 class="font-semibold text-gray-800" data-i18n="pt.step-ratio"></h3></div>
                                 <div class="grid grid-cols-4 gap-2" data-ratio-group>
                                     <button type="button" class="option-btn selected" data-ratio="9:16">9:16</button>
                                     <button type="button" class="option-btn" data-ratio="1:1">1:1</button>
@@ -1354,7 +1374,7 @@
                                 </div>
                             </div>
                             <div class="card">
-                                <div class="flex items-center gap-3 mb-4"><span class="step-num">4</span><h3 class="font-semibold text-gray-800" data-i18n="pt.step-count"></h3></div>
+                                <div class="flex items-center gap-3 mb-4"><span class="step-num">5</span><h3 class="font-semibold text-gray-800" data-i18n="pt.step-count"></h3></div>
                                 <div class="grid grid-cols-5 gap-2" data-count-group>
                                     ${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => `<button type="button" class="option-btn${n === 4 ? ' selected' : ''}" data-count="${n}">${n}</button>`).join('')}
                                 </div>
@@ -1386,6 +1406,7 @@
 
                 let selectedCount = 4;
                 let selectedRatio = '9:16';
+                let selectedCam = 'selfie';
                 let results = [];
                 let busy = false;
 
@@ -1395,12 +1416,13 @@
                 const strip = document.getElementById(`${p}-char-strip`);
 
                 // Chip single-select per grup
-                [['data-scene-group', 'data-scene'], ['data-ratio-group', 'data-ratio'], ['data-count-group', 'data-count']].forEach(([group, attr]) => {
+                [['data-scene-group', 'data-scene'], ['data-cam-group', 'data-cam'], ['data-ratio-group', 'data-ratio'], ['data-count-group', 'data-count']].forEach(([group, attr]) => {
                     host.querySelector(`[${group}]`).addEventListener('click', (e) => {
                         const btn = e.target.closest(`button[${attr}]`);
                         if (!btn) return;
                         host.querySelectorAll(`[${group}] .option-btn`).forEach(b => b.classList.remove('selected'));
                         btn.classList.add('selected');
+                        if (attr === 'data-cam') selectedCam = btn.dataset.cam;
                         if (attr === 'data-ratio') selectedRatio = btn.dataset.ratio;
                         if (attr === 'data-count') selectedCount = Number(btn.dataset.count);
                     });
@@ -1616,8 +1638,8 @@
                     grid.innerHTML = picks.map((_, i) => spinnerCard(i + 1)).join('');
 
                     async function genOne(index) {
-                        const b64 = await genImageWithRefs(buildPhotoPrompt(picks[index - 1], selectedRatio, char, outfit, prodB64s.length), [refFront, refBody, ...prodB64s]);
-                        results[index - 1] = { b64, scene: picks[index - 1], outfit, oimgIds, filename: `${p}-${index}.png` };
+                        const b64 = await genImageWithRefs(buildPhotoPrompt(picks[index - 1], selectedRatio, char, outfit, prodB64s.length, selectedCam), [refFront, refBody, ...prodB64s]);
+                        results[index - 1] = { b64, scene: picks[index - 1], outfit, oimgIds, cam: selectedCam, filename: `${p}-${index}.png` };
                         const card = document.getElementById(`${p}-card-${index}`);
                         if (card) card.innerHTML = cardInner(index, b64);
                     }
@@ -1672,8 +1694,8 @@
                             const rf = await window.blobToB64(char2.blobs[0]);
                             const rb = await window.blobToB64(char2.blobs[4]);
                             const prodRegen = await selectedProductB64s(r.oimgIds || []);
-                            const b64 = await genImageWithRefs(buildPhotoPrompt(r.scene, selectedRatio, char2, r.outfit || '', prodRegen.length), [rf, rb, ...prodRegen]);
-                            results[idx] = { b64, scene: r.scene, outfit: r.outfit, oimgIds: r.oimgIds, filename: r.filename };
+                            const b64 = await genImageWithRefs(buildPhotoPrompt(r.scene, selectedRatio, char2, r.outfit || '', prodRegen.length, r.cam || selectedCam), [rf, rb, ...prodRegen]);
+                            results[idx] = { b64, scene: r.scene, outfit: r.outfit, oimgIds: r.oimgIds, cam: r.cam, filename: r.filename };
                             card.innerHTML = cardInner(idx + 1, b64);
                         } catch (err) {
                             if (window.logDebug) window.logDebug(p + '-regen', String(err));
@@ -1887,8 +1909,13 @@
             window.escHtml = function (s) {
                 return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
             };
-            window.APP_VERSION = '1.7';
+            window.APP_VERSION = '1.8';
             window.CHANGELOG = [
+                { version: '1.8', date: '18 Sep 2026', changes: [
+                    { id: 'Pilihan Gaya Foto di semua sesi: Selfie Sendiri (default, lebih natural) atau Difotoin Orang',
+                      en: 'Photo Style option in every session: Self-Shot Selfie (default, more natural) or Taken by Someone',
+                      ms: 'Pilihan Gaya Foto dalam setiap sesi: Selfie Sendiri (lalai, lebih natural) atau Difotokan Orang' },
+                ] },
                 { version: '1.7', date: '18 Sep 2026', changes: [
                     { id: 'Foto outfit/produk sekarang ikut akun (cloud) - login di perangkat lain, pustaka foto produk otomatis muncul',
                       en: 'Outfit/product photos now follow your account (cloud) - sign in on another device and your product library appears automatically',
