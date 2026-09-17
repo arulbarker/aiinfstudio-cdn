@@ -322,6 +322,9 @@
                     'Acak': 'Random',
                     'Selfie di Mobil': 'Car Selfie', 'Makan di Kafe': 'Eating at a Cafe', 'Nongkrong Ngopi': 'Coffee Hangout',
                     'Masak di Dapur': 'Cooking at Home', 'Santai di Rumah': 'Relaxing at Home', 'Belanja di Supermarket': 'Grocery Shopping',
+                    'Naik Ojek Online': 'Riding an Ojek', 'Naik Motor': 'Riding a Scooter', 'Nyetir Mobil': 'Driving a Car',
+                    'Naik Kereta': 'On the Train', 'Jajan Street Food': 'Street Food Run', 'Hujan-hujanan': 'Rainy Day Walk',
+                    'Di Minimarket': 'At the Minimart', 'Rebahan Main HP': 'Scrolling in Bed',
                     'Depan Mic Podcast': 'At the Podcast Mic', 'Ngobrol Pakai Headphone': 'Talking with Headphones',
                     'Behind the Scenes Studio': 'Studio Behind the Scenes', 'Wawancara Tamu': 'Interviewing a Guest', 'Ketawa Saat Rekaman': 'Laughing While Recording',
                     'Mirror Selfie Outfit': 'Outfit Mirror Selfie', 'Detail Outfit': 'Outfit Details', 'Selfie di Lift': 'Elevator Selfie', 'Outfit di Kafe Estetik': 'Cafe Outfit Shot',
@@ -336,6 +339,8 @@
                     'Acak': 'Rawak',
                     'Selfie di Mobil': 'Selfie di Kereta', 'Nongkrong Ngopi': 'Lepak Kopi', 'Masak di Dapur': 'Memasak di Dapur',
                     'Belanja di Supermarket': 'Beli-belah di Pasar Raya',
+                    'Naik Motor': 'Naik Motosikal', 'Nyetir Mobil': 'Memandu Kereta', 'Naik Kereta': 'Naik Keretapi',
+                    'Jajan Street Food': 'Beli Makanan Jalanan', 'Hujan-hujanan': 'Jalan Ketika Hujan', 'Rebahan Main HP': 'Baring Main Telefon',
                     'Ngobrol Pakai Headphone': 'Berbual Pakai Fon Kepala', 'Wawancara Tamu': 'Menemu Bual Tetamu', 'Ketawa Saat Rekaman': 'Ketawa Semasa Rakaman',
                     'Detail Outfit': 'Detail Pakaian', 'Selfie di Lift': 'Selfie di Lif',
                     'Latihan di Gym': 'Bersenam di Gym', 'Naik Gunung': 'Mendaki', 'Stretching di Taman': 'Regangan di Taman', 'Selfie Habis Workout': 'Selfie Selepas Bersenam'
@@ -1610,7 +1615,15 @@
                     { val: 'hanging out with a drink at a coffee shop', label: 'Nongkrong Ngopi' },
                     { val: 'cooking at a home kitchen', label: 'Masak di Dapur' },
                     { val: 'relaxing lazy day on a sofa at home', label: 'Santai di Rumah' },
-                    { val: 'grocery shopping at a supermarket', label: 'Belanja di Supermarket' }
+                    { val: 'grocery shopping at a supermarket', label: 'Belanja di Supermarket' },
+                    { val: 'riding on the back of an online motorcycle taxi (ojek), wearing a helmet, candid city traffic background', label: 'Naik Ojek Online' },
+                    { val: 'riding a scooter in city traffic wearing a helmet', label: 'Naik Motor' },
+                    { val: 'driving a car, candid shot from the passenger seat', label: 'Nyetir Mobil' },
+                    { val: 'commuting on a crowded city train, holding the handrail', label: 'Naik Kereta' },
+                    { val: 'buying street food from a roadside vendor', label: 'Jajan Street Food' },
+                    { val: 'walking under an umbrella in light rain on a city sidewalk', label: 'Hujan-hujanan' },
+                    { val: 'shopping casually at a small convenience store', label: 'Di Minimarket' },
+                    { val: 'lying on the bed casually scrolling the phone in a cozy bedroom', label: 'Rebahan Main HP' }
                 ]
             });
             createPhotoTab({
@@ -1788,8 +1801,13 @@
             window.escHtml = function (s) {
                 return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
             };
-            window.APP_VERSION = '1.5';
+            window.APP_VERSION = '1.6';
             window.CHANGELOG = [
+                { version: '1.6', date: '18 Sep 2026', changes: [
+                    { id: '8 scene natural baru di Lifestyle: naik ojek online, naik motor, nyetir mobil, naik kereta, jajan street food, hujan-hujanan, minimarket, rebahan main HP',
+                      en: '8 new natural scenes in Lifestyle: riding an ojek, riding a scooter, driving, on the train, street food run, rainy day walk, minimart, scrolling in bed',
+                      ms: '8 scene natural baharu dalam Lifestyle: naik ojek, naik motosikal, memandu, naik keretapi, beli makanan jalanan, jalan ketika hujan, minimarket, baring main telefon' },
+                ] },
                 { version: '1.5', date: '18 Sep 2026', changes: [
                     { id: 'Foto referensi produk: upload foto sepatu/baju/tas (tersimpan, max 10), pilih sampai 5 per generate - influencer memakai produk persis seperti fotonya. Cocok untuk konten affiliate',
                       en: 'Product reference photos: upload shoes/clothes/bags (saved, max 10), select up to 5 per generate - the influencer wears the exact products. Great for affiliate content',
