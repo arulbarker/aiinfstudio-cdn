@@ -81,6 +81,10 @@
                     'err.outfit-empty': 'Ketik outfit dulu sebelum disimpan.',
                     'err.outfit-limit': 'Maksimal 10 outfit tersimpan. Hapus salah satu dulu (klik tanda silang).',
                     'pt.outfit-dup': 'Outfit ini sudah tersimpan.',
+                    'pt.oimg-sub': 'Foto produk (sepatu, baju, tas...) — klik untuk pilih, maksimal 5 per generate. Cocok untuk konten affiliate.',
+                    'err.oimg-limit': 'Maksimal 10 foto produk tersimpan. Hapus salah satu dulu.',
+                    'err.oimg-sel': 'Maksimal 5 foto produk dipilih per generate.',
+                    'err.oimg-read': 'Gagal membaca foto. Coba file lain.',
                     'vp.title': 'Prompt Video',
                     'vp.mode-natural': 'Natural',
                     'vp.mode-niche': 'Konten Niche',
@@ -171,6 +175,10 @@
                     'err.outfit-empty': 'Type an outfit first before saving.',
                     'err.outfit-limit': 'Maximum 10 saved outfits. Delete one first (click the cross).',
                     'pt.outfit-dup': 'This outfit is already saved.',
+                    'pt.oimg-sub': 'Product photos (shoes, clothes, bags...) — click to select, max 5 per generate. Great for affiliate content.',
+                    'err.oimg-limit': 'Maximum 10 saved product photos. Delete one first.',
+                    'err.oimg-sel': 'Maximum 5 product photos selected per generate.',
+                    'err.oimg-read': 'Failed to read the photo. Try another file.',
                     'vp.title': 'Video Prompt',
                     'vp.mode-natural': 'Natural',
                     'vp.mode-niche': 'Niche Content',
@@ -261,6 +269,10 @@
                     'err.outfit-empty': 'Taip outfit dahulu sebelum disimpan.',
                     'err.outfit-limit': 'Maksimum 10 outfit tersimpan. Padam satu dahulu (klik tanda pangkah).',
                     'pt.outfit-dup': 'Outfit ini sudah tersimpan.',
+                    'pt.oimg-sub': 'Foto produk (kasut, baju, beg...) — klik untuk pilih, maksimum 5 setiap janaan. Sesuai untuk kandungan affiliate.',
+                    'err.oimg-limit': 'Maksimum 10 foto produk tersimpan. Padam satu dahulu.',
+                    'err.oimg-sel': 'Maksimum 5 foto produk dipilih setiap janaan.',
+                    'err.oimg-read': 'Gagal membaca foto. Cuba fail lain.',
                     'vp.title': 'Prompt Video',
                     'vp.mode-natural': 'Natural',
                     'vp.mode-niche': 'Kandungan Niche',
@@ -1146,12 +1158,20 @@
                 '3:4': 'portrait 3:4 format',
                 '16:9': 'wide 16:9 landscape orientation'
             };
-            function buildPhotoPrompt(scene, ratio, char, outfit) {
+            function buildPhotoPrompt(scene, ratio, char, outfit, productCount) {
                 const f = (char && char.cfg) || {};
-                const clothing = outfit
-                    ? `Wearing: ${outfit} (outfit may differ from the reference photos - only face and identity must stay the same).`
-                    : `Clothing style consistent with: ${f.style || 'modern casual clothing'}.`;
-                return `Keep the person EXACTLY as in the provided reference photos - same face, same hair, same skin tone, ` +
+                let clothing;
+                if (productCount > 0) {
+                    clothing = `The FIRST TWO reference images show the person. The remaining ${productCount} reference image(s) are PRODUCT references ` +
+                        `(clothing, shoes, bags, accessories). The person MUST wear or use these exact products - keep each product's design, ` +
+                        `colors, materials, logos and details EXACTLY as shown in the product references, combined into one natural complete outfit.` +
+                        (outfit ? ` Additional outfit notes: ${outfit}.` : '');
+                } else if (outfit) {
+                    clothing = `Wearing: ${outfit} (outfit may differ from the reference photos - only face and identity must stay the same).`;
+                } else {
+                    clothing = `Clothing style consistent with: ${f.style || 'modern casual clothing'}.`;
+                }
+                return `Keep the person EXACTLY as in the first two reference photos - same face, same hair, same skin tone, ` +
                     `do NOT alter the person's identity. Only change the scene: ${scene}. ` +
                     clothing + ` ` +
                     `Candid natural moment, realistic lighting, amateur smartphone photo look, slight natural imperfection, ` +
@@ -1173,6 +1193,38 @@
                 localStorage.setItem('sia_outfits', JSON.stringify(list.slice(0, OUTFIT_MAX)));
                 document.dispatchEvent(new CustomEvent('sia-outfits-changed'));
             }
+
+            // Pustaka FOTO produk/outfit (IndexedDB, per perangkat, max 10 tersimpan) —
+            // dipilih max 5 per generate sebagai referensi produk (konten affiliate)
+            const OIMG_MAX = 10;
+            const OIMG_SEL_MAX = 5;
+            window.outfitImgDB = (function () {
+                const DB = 'sia_outfit_imgs', STORE = 'items';
+                function open() {
+                    return new Promise((resolve, reject) => {
+                        const req = indexedDB.open(DB, 1);
+                        req.onupgradeneeded = () => {
+                            if (!req.result.objectStoreNames.contains(STORE)) req.result.createObjectStore(STORE, { keyPath: 'id' });
+                        };
+                        req.onsuccess = () => resolve(req.result);
+                        req.onerror = () => reject(req.error);
+                    });
+                }
+                async function tx(mode, fn) {
+                    const db = await open();
+                    return new Promise((resolve, reject) => {
+                        const t = db.transaction(STORE, mode);
+                        const out = fn(t.objectStore(STORE));
+                        t.oncomplete = () => { db.close(); resolve(out.result !== undefined ? out.result : out.value); };
+                        t.onerror = () => { db.close(); reject(t.error); };
+                    });
+                }
+                return {
+                    list() { return tx('readonly', s => s.getAll()).then(r => r || []); },
+                    put(rec) { return tx('readwrite', s => s.put(rec)); },
+                    remove(id) { return tx('readwrite', s => s.delete(id)); }
+                };
+            })();
 
             async function genImageWithRefs(promptText, refs) {
                 const g = window.SIA_GEN;
@@ -1211,6 +1263,9 @@
                                     <button type="button" id="${p}-outfit-save" class="btn-secondary rounded-lg px-3 flex-shrink-0" style="min-width:44px;" title="Simpan outfit" aria-label="Simpan outfit"><i class="fas fa-bookmark"></i></button>
                                 </div>
                                 <div id="${p}-outfit-chips" class="flex flex-wrap gap-2 mt-3"></div>
+                                <p class="text-xs text-gray-500 mt-4 mb-2" data-i18n="pt.oimg-sub"></p>
+                                <div id="${p}-oimg-grid" class="flex flex-wrap gap-3"></div>
+                                <input type="file" id="${p}-oimg-file" accept="image/*" multiple class="hidden">
                             </div>
                             <div class="card">
                                 <div class="flex items-center gap-3 mb-4"><span class="step-num">3</span><h3 class="font-semibold text-gray-800" data-i18n="pt.step-ratio"></h3></div>
@@ -1313,6 +1368,79 @@
                     setOutfits(list);
                 });
 
+                // ---- Foto produk/outfit (pustaka bersama antar tab, pilih max 5) ----
+                const oimgGrid = document.getElementById(`${p}-oimg-grid`);
+                const oimgFile = document.getElementById(`${p}-oimg-file`);
+                const oimgSel = new Set();
+                async function renderOimg() {
+                    const items = await window.outfitImgDB.list();
+                    for (const id of [...oimgSel]) if (!items.some(it => String(it.id) === id)) oimgSel.delete(id);
+                    oimgGrid.innerHTML = items.map(it => {
+                        const url = URL.createObjectURL(it.blob);
+                        const on = oimgSel.has(String(it.id));
+                        return `<div class="relative" style="width:4rem;height:4rem;">
+                            <button type="button" data-oimg="${it.id}" class="block rounded-lg overflow-hidden" style="width:4rem;height:4rem;border:3px solid ${on ? '#7c3aed' : '#e2e8f0'};">
+                                <img src="${url}" style="width:100%;height:100%;object-fit:cover;" alt="">
+                            </button>
+                            ${on ? '<span class="absolute bottom-0.5 left-0.5 w-4 h-4 rounded-full text-white text-[9px] flex items-center justify-center" style="background:#7c3aed;"><i class="fas fa-check"></i></span>' : ''}
+                            <button type="button" data-oimg-del="${it.id}" class="absolute rounded-full bg-red-500 text-white flex items-center justify-center" style="top:-0.4rem;right:-0.4rem;width:1.4rem;height:1.4rem;font-size:0.7rem;" aria-label="Hapus foto">×</button>
+                        </div>`;
+                    }).join('') +
+                    `<button type="button" id="${p}-oimg-add" class="rounded-lg text-gray-400 hover:text-violet-500" style="width:4rem;height:4rem;border:2px dashed #cbd5e1;" aria-label="Upload foto produk"><i class="fas fa-plus"></i></button>`;
+                }
+                document.addEventListener('sia-oimg-changed', renderOimg);
+                renderOimg();
+                oimgGrid.addEventListener('click', async (e) => {
+                    const addBtn = e.target.closest(`#${p}-oimg-add`);
+                    if (addBtn) { oimgFile.click(); return; }
+                    const del = e.target.closest('[data-oimg-del]');
+                    if (del) {
+                        await window.outfitImgDB.remove(del.dataset.oimgDel);
+                        oimgSel.delete(String(del.dataset.oimgDel));
+                        document.dispatchEvent(new CustomEvent('sia-oimg-changed'));
+                        return;
+                    }
+                    const thumb = e.target.closest('[data-oimg]');
+                    if (!thumb) return;
+                    const id = String(thumb.dataset.oimg);
+                    if (oimgSel.has(id)) oimgSel.delete(id);
+                    else {
+                        if (oimgSel.size >= OIMG_SEL_MAX) { await window.uiNotify(window.t('err.oimg-sel')); return; }
+                        oimgSel.add(id);
+                    }
+                    renderOimg();
+                });
+                oimgFile.addEventListener('change', async () => {
+                    const files = Array.from(oimgFile.files || []);
+                    oimgFile.value = '';
+                    if (!files.length) return;
+                    let items = await window.outfitImgDB.list();
+                    for (const file of files) {
+                        if (items.length >= OIMG_MAX) { await window.uiNotify(window.t('err.oimg-limit')); break; }
+                        try {
+                            let src = file;
+                            if (file.type === 'image/heic' || /\.heic$/i.test(file.name || '')) {
+                                src = await heic2any({ blob: file, toType: 'image/jpeg' });
+                            }
+                            const { blob } = await window.compressImage(src, 768, 0.85);
+                            await window.outfitImgDB.put({ id: 'o' + Date.now() + Math.floor(Math.random() * 1000), blob });
+                            items = await window.outfitImgDB.list();
+                        } catch (err) {
+                            if (window.logDebug) window.logDebug(p + '-oimg', String(err));
+                            await window.uiNotify(window.t('err.oimg-read'));
+                        }
+                    }
+                    document.dispatchEvent(new CustomEvent('sia-oimg-changed'));
+                });
+                async function selectedProductB64s(ids) {
+                    const items = await window.outfitImgDB.list();
+                    const out = [];
+                    for (const it of items) {
+                        if (ids.includes(String(it.id)) && out.length < OIMG_SEL_MAX) out.push(await window.blobToB64(it.blob));
+                    }
+                    return out;
+                }
+
                 async function renderStrip() {
                     const c = await window.getActiveChar();
                     if (!c) {
@@ -1389,14 +1517,16 @@
                         return;
                     }
                     const outfit = document.getElementById(`${p}-outfit`).value.trim();
+                    const oimgIds = [...oimgSel];
+                    const prodB64s = await selectedProductB64s(oimgIds);
                     results = [];
                     emptyState.classList.add('hidden');
                     dlAll.classList.add('hidden');
                     grid.innerHTML = picks.map((_, i) => spinnerCard(i + 1)).join('');
 
                     async function genOne(index) {
-                        const b64 = await genImageWithRefs(buildPhotoPrompt(picks[index - 1], selectedRatio, char, outfit), [refFront, refBody]);
-                        results[index - 1] = { b64, scene: picks[index - 1], outfit, filename: `${p}-${index}.png` };
+                        const b64 = await genImageWithRefs(buildPhotoPrompt(picks[index - 1], selectedRatio, char, outfit, prodB64s.length), [refFront, refBody, ...prodB64s]);
+                        results[index - 1] = { b64, scene: picks[index - 1], outfit, oimgIds, filename: `${p}-${index}.png` };
                         const card = document.getElementById(`${p}-card-${index}`);
                         if (card) card.innerHTML = cardInner(index, b64);
                     }
@@ -1450,8 +1580,9 @@
                             const char2 = await window.getActiveChar();
                             const rf = await window.blobToB64(char2.blobs[0]);
                             const rb = await window.blobToB64(char2.blobs[4]);
-                            const b64 = await genImageWithRefs(buildPhotoPrompt(r.scene, selectedRatio, char2, r.outfit || ''), [rf, rb]);
-                            results[idx] = { b64, scene: r.scene, outfit: r.outfit, filename: r.filename };
+                            const prodRegen = await selectedProductB64s(r.oimgIds || []);
+                            const b64 = await genImageWithRefs(buildPhotoPrompt(r.scene, selectedRatio, char2, r.outfit || '', prodRegen.length), [rf, rb, ...prodRegen]);
+                            results[idx] = { b64, scene: r.scene, outfit: r.outfit, oimgIds: r.oimgIds, filename: r.filename };
                             card.innerHTML = cardInner(idx + 1, b64);
                         } catch (err) {
                             if (window.logDebug) window.logDebug(p + '-regen', String(err));
@@ -1657,8 +1788,13 @@
             window.escHtml = function (s) {
                 return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
             };
-            window.APP_VERSION = '1.4';
+            window.APP_VERSION = '1.5';
             window.CHANGELOG = [
+                { version: '1.5', date: '18 Sep 2026', changes: [
+                    { id: 'Foto referensi produk: upload foto sepatu/baju/tas (tersimpan, max 10), pilih sampai 5 per generate - influencer memakai produk persis seperti fotonya. Cocok untuk konten affiliate',
+                      en: 'Product reference photos: upload shoes/clothes/bags (saved, max 10), select up to 5 per generate - the influencer wears the exact products. Great for affiliate content',
+                      ms: 'Foto rujukan produk: muat naik kasut/baju/beg (tersimpan, maks 10), pilih hingga 5 setiap janaan - influencer memakai produk sama persis. Sesuai untuk kandungan affiliate' },
+                ] },
                 { version: '1.4', date: '18 Sep 2026', changes: [
                     { id: 'Muat karakter jauh lebih cepat: foto angle dikompres (10x lebih kecil) dan download 5 angle jadi 1 request',
                       en: 'Characters load much faster: angle photos are compressed (10x smaller) and all 5 angles download in a single request',
