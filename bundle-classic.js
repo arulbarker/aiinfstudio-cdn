@@ -797,6 +797,76 @@
                     document.dispatchEvent(new CustomEvent('sia-chars-changed'));
                 };
 
+                // ---- Client cloud foto outfit (pola sama dengan charCloud) ----
+                window.oimgCloud = {
+                    _q(action, extra) {
+                        const email = localStorage.getItem('sia_email') || '';
+                        return `${LOGIN_CFG.SCRIPT_URL}?action=${action}&email=${encodeURIComponent(email)}&token=${encodeURIComponent(deviceToken)}&app_secret=${encodeURIComponent(LOGIN_CFG.APP_SECRET)}${extra || ''}`;
+                    },
+                    async listIds() {
+                        const d = await fetch(this._q('oimg_list')).then(r => r.json());
+                        return d.status === 'SUKSES' ? (d.ids || []) : null;
+                    },
+                    async getAll() {
+                        const d = await fetch(this._q('oimg_get_all')).then(r => r.json());
+                        return d.status === 'SUKSES' ? (d.items || []) : null;
+                    },
+                    async del(id) {
+                        try {
+                            const d = await fetch(this._q('oimg_del', `&id=${encodeURIComponent(id)}`)).then(r => r.json());
+                            return d.status === 'SUKSES';
+                        } catch (e) { return false; }
+                    },
+                    async upload(rec) {
+                        const body = JSON.stringify({
+                            sia_action: 'oimg_upload',
+                            app_secret: LOGIN_CFG.APP_SECRET,
+                            email: localStorage.getItem('sia_email') || '',
+                            token: deviceToken,
+                            id: rec.id, base64: rec.base64
+                        });
+                        const d = await fetch(LOGIN_CFG.SCRIPT_URL, { method: 'POST', body }).then(r => r.json());
+                        return d;
+                    }
+                };
+                // Aturan emas sama: JANGAN hapus lokal item cloud:false (pending upload)
+                window.__syncingOimg = false;
+                window.syncOutfitImgs = async function () {
+                    if (!localStorage.getItem('sia_email') || !window.outfitImgDB) return;
+                    if (window.__syncingOimg) return;
+                    window.__syncingOimg = true;
+                    try {
+                        const server = await window.oimgCloud.listIds();
+                        if (!server) return;
+                        const serverIds = new Set(server.map(String));
+                        const local = await window.outfitImgDB.list();
+                        const localIds = new Set(local.map(i => String(i.id)));
+                        for (const it of local) {
+                            if (it.cloud === true && !serverIds.has(String(it.id))) { await window.outfitImgDB.remove(it.id); continue; }
+                            if (it.cloud !== true) {
+                                try {
+                                    const b64 = await window.blobToB64(it.blob);
+                                    const d = await window.oimgCloud.upload({ id: it.id, base64: b64 });
+                                    if (d && d.status === 'SUKSES') await window.outfitImgDB.put(Object.assign({}, it, { cloud: true }));
+                                } catch (e) {}
+                            }
+                        }
+                        const missing = server.filter(id => !localIds.has(String(id)));
+                        if (missing.length) {
+                            const items = await window.oimgCloud.getAll();
+                            if (items) {
+                                for (const s of items) {
+                                    if (!localIds.has(String(s.id))) {
+                                        await window.outfitImgDB.put({ id: String(s.id), blob: window.b64ToBlob(s.base64, 'image/jpeg'), cloud: true });
+                                    }
+                                }
+                            }
+                        }
+                    } catch (e) { console.error('syncOutfitImgs:', e); }
+                    window.__syncingOimg = false;
+                    document.dispatchEvent(new CustomEvent('sia-oimg-changed'));
+                };
+
                 function showError(msg) {
                     errEl.textContent = msg;
                     errEl.classList.remove('hidden');
@@ -815,6 +885,7 @@
                     document.getElementById('user-name').textContent = nama;
                     if (!sesInterval) sesInterval = setInterval(jagaSesi, 10000);
                     if (window.syncChars) window.syncChars();
+                    if (window.syncOutfitImgs) setTimeout(() => window.syncOutfitImgs(), 0);
                 }
                 async function jagaSesi() {
                     const email = localStorage.getItem('sia_email');
@@ -871,6 +942,7 @@
                 if (savedEmail && savedName) {
                     setLoading(true);
                     if (window.syncChars) window.syncChars();   // preload karakter SAMBIL cek sesi — tanpa await
+                    if (window.syncOutfitImgs) setTimeout(() => window.syncOutfitImgs(), 0);   // preload foto outfit juga
                     api('cek', savedEmail)
                         .then(d => {
                             setLoading(false);
@@ -1400,8 +1472,15 @@
                     if (addBtn) { oimgFile.click(); return; }
                     const del = e.target.closest('[data-oimg-del]');
                     if (del) {
-                        await window.outfitImgDB.remove(del.dataset.oimgDel);
-                        oimgSel.delete(String(del.dataset.oimgDel));
+                        const delId = String(del.dataset.oimgDel);
+                        const all = await window.outfitImgDB.list();
+                        const item = all.find(x => String(x.id) === delId);
+                        if (item && item.cloud === true && window.oimgCloud) {
+                            const ok = await window.oimgCloud.del(delId);
+                            if (!ok) { await window.uiNotify(window.t('err.del-failed')); return; }
+                        }
+                        await window.outfitImgDB.remove(delId);
+                        oimgSel.delete(delId);
                         document.dispatchEvent(new CustomEvent('sia-oimg-changed'));
                         return;
                     }
@@ -1427,8 +1506,15 @@
                             if (file.type === 'image/heic' || /\.heic$/i.test(file.name || '')) {
                                 src = await heic2any({ blob: file, toType: 'image/jpeg' });
                             }
-                            const { blob } = await window.compressImage(src, 768, 0.85);
-                            await window.outfitImgDB.put({ id: 'o' + Date.now() + Math.floor(Math.random() * 1000), blob });
+                            const { blob, b64 } = await window.compressImage(src, 768, 0.85);
+                            const newId = 'o' + Date.now() + Math.floor(Math.random() * 1000);
+                            const rec = { id: newId, blob, cloud: false };
+                            try {
+                                const d = window.oimgCloud ? await window.oimgCloud.upload({ id: newId, base64: b64 }) : null;
+                                if (d && d.status === 'SUKSES') rec.cloud = true;
+                                else if (d && d.code === 'LIMIT') { await window.uiNotify(d.message || window.t('err.oimg-limit')); continue; }
+                            } catch (e2) { /* offline → tetap simpan lokal cloud:false, sync menyusul */ }
+                            await window.outfitImgDB.put(rec);
                             items = await window.outfitImgDB.list();
                         } catch (err) {
                             if (window.logDebug) window.logDebug(p + '-oimg', String(err));
@@ -1801,8 +1887,13 @@
             window.escHtml = function (s) {
                 return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
             };
-            window.APP_VERSION = '1.6';
+            window.APP_VERSION = '1.7';
             window.CHANGELOG = [
+                { version: '1.7', date: '18 Sep 2026', changes: [
+                    { id: 'Foto outfit/produk sekarang ikut akun (cloud) - login di perangkat lain, pustaka foto produk otomatis muncul',
+                      en: 'Outfit/product photos now follow your account (cloud) - sign in on another device and your product library appears automatically',
+                      ms: 'Foto outfit/produk kini mengikut akaun (cloud) - log masuk di peranti lain, pustaka foto produk muncul secara automatik' },
+                ] },
                 { version: '1.6', date: '18 Sep 2026', changes: [
                     { id: '8 scene natural baru di Lifestyle: naik ojek online, naik motor, nyetir mobil, naik kereta, jajan street food, hujan-hujanan, minimarket, rebahan main HP',
                       en: '8 new natural scenes in Lifestyle: riding an ojek, riding a scooter, driving, on the train, street food run, rainy day walk, minimart, scrolling in bed',
