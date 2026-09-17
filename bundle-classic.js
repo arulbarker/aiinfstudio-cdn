@@ -768,7 +768,16 @@
                         const server = await window.charCloud.list();
                         if (!server) return;
                         const serverIds = new Set(server.map(c => String(c.id)));
-                        const local = await window.charDB.list();
+                        let local = await window.charDB.list();
+                        // SELF-HEALING: server kosong total tapi lokal masih punya data cloud
+                        // = kemungkinan sheet terhapus/dibersihkan manual. JANGAN hapus lokal —
+                        // tandai ulang cloud:false supaya ter-upload balik ke server.
+                        if (server.length === 0 && local.some(c => c.cloud === true)) {
+                            for (const c of local) {
+                                if (c.cloud === true) await window.charDB.put(Object.assign({}, c, { cloud: false }));
+                            }
+                            local = await window.charDB.list();
+                        }
                         const localIds = new Set(local.map(c => String(c.id)));
                         for (const c of local) {
                             if (c.cloud === true && !serverIds.has(String(c.id))) { await window.charDB.remove(c.id); continue; }
@@ -844,7 +853,14 @@
                         const server = await window.oimgCloud.listIds();
                         if (!server) return;
                         const serverIds = new Set(server.map(String));
-                        const local = await window.outfitImgDB.list();
+                        let local = await window.outfitImgDB.list();
+                        // SELF-HEALING: sama seperti karakter — server kosong + lokal ber-cloud = upload balik
+                        if (server.length === 0 && local.some(i => i.cloud === true)) {
+                            for (const it of local) {
+                                if (it.cloud === true) await window.outfitImgDB.put(Object.assign({}, it, { cloud: false }));
+                            }
+                            local = await window.outfitImgDB.list();
+                        }
                         const localIds = new Set(local.map(i => String(i.id)));
                         for (const it of local) {
                             if (it.cloud === true && !serverIds.has(String(it.id))) { await window.outfitImgDB.remove(it.id); continue; }
@@ -1909,8 +1925,13 @@
             window.escHtml = function (s) {
                 return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
             };
-            window.APP_VERSION = '1.8';
+            window.APP_VERSION = '1.9';
             window.CHANGELOG = [
+                { version: '1.9', date: '18 Sep 2026', changes: [
+                    { id: 'Pengaman data: kalau database server kosong tak wajar, karakter & foto outfit di perangkat otomatis di-upload balik (bukan ikut terhapus)',
+                      en: 'Data safeguard: if the server database is unexpectedly empty, characters & outfit photos on your device are re-uploaded automatically (not deleted)',
+                      ms: 'Pelindung data: jika pangkalan data pelayan kosong secara luar biasa, watak & foto outfit pada peranti dimuat naik semula secara automatik (bukan dipadam)' },
+                ] },
                 { version: '1.8', date: '18 Sep 2026', changes: [
                     { id: 'Pilihan Gaya Foto di semua sesi: Selfie Sendiri (default, lebih natural) atau Difotoin Orang',
                       en: 'Photo Style option in every session: Self-Shot Selfie (default, more natural) or Taken by Someone',
