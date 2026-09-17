@@ -78,6 +78,9 @@
                     'pt.tip3': 'Kalau wajah kurang mirip, klik Regenerate di kartu foto itu.',
                     'pt.outfit-label': 'Outfit (Opsional)',
                     'pt.outfit-ph': 'contoh: gamis hitam elegan / kaos putih + jeans',
+                    'err.outfit-empty': 'Ketik outfit dulu sebelum disimpan.',
+                    'err.outfit-limit': 'Maksimal 10 outfit tersimpan. Hapus salah satu dulu (klik tanda silang).',
+                    'pt.outfit-dup': 'Outfit ini sudah tersimpan.',
                     'vp.title': 'Prompt Video',
                     'vp.mode-natural': 'Natural',
                     'vp.mode-niche': 'Konten Niche',
@@ -165,6 +168,9 @@
                     'pt.tip3': 'If the face looks off, click Regenerate on that photo card.',
                     'pt.outfit-label': 'Outfit (Optional)',
                     'pt.outfit-ph': 'e.g. elegant black dress / white tee + jeans',
+                    'err.outfit-empty': 'Type an outfit first before saving.',
+                    'err.outfit-limit': 'Maximum 10 saved outfits. Delete one first (click the cross).',
+                    'pt.outfit-dup': 'This outfit is already saved.',
                     'vp.title': 'Video Prompt',
                     'vp.mode-natural': 'Natural',
                     'vp.mode-niche': 'Niche Content',
@@ -252,6 +258,9 @@
                     'pt.tip3': 'Jika wajah kurang mirip, klik Regenerate pada kad foto itu.',
                     'pt.outfit-label': 'Outfit (Pilihan)',
                     'pt.outfit-ph': 'cth: jubah hitam elegan / t-shirt putih + jeans',
+                    'err.outfit-empty': 'Taip outfit dahulu sebelum disimpan.',
+                    'err.outfit-limit': 'Maksimum 10 outfit tersimpan. Padam satu dahulu (klik tanda pangkah).',
+                    'pt.outfit-dup': 'Outfit ini sudah tersimpan.',
                     'vp.title': 'Prompt Video',
                     'vp.mode-natural': 'Natural',
                     'vp.mode-niche': 'Kandungan Niche',
@@ -329,7 +338,8 @@
                 else elm.appendChild(document.createTextNode(label));
             }
             function applyChipLabels(lang) {
-                document.querySelectorAll('.option-btn').forEach(btn => {
+                // Chip outfit (data-outfit-idx) = teks buatan user — JANGAN diterjemahkan/disentuh
+                document.querySelectorAll('.option-btn:not([data-outfit-idx])').forEach(btn => {
                     if (!btn.dataset.i18nId) {
                         const txt = (btn.textContent || '').trim();
                         if (!txt) return;
@@ -1124,6 +1134,22 @@
                     `no studio pose, ${RATIO_TEXT[ratio] || RATIO_TEXT['9:16']}, no text, no watermark.`;
             }
 
+            // Pustaka outfit tersimpan (per perangkat, max 10) — dipakai bersama semua tab foto
+            const OUTFIT_MAX = 10;
+            window.escHtml = window.escHtml || function (s) {
+                return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+            };
+            window.getOutfits = function () {
+                try {
+                    const a = JSON.parse(localStorage.getItem('sia_outfits') || '[]');
+                    return Array.isArray(a) ? a : [];
+                } catch (e) { return []; }
+            };
+            function setOutfits(list) {
+                localStorage.setItem('sia_outfits', JSON.stringify(list.slice(0, OUTFIT_MAX)));
+                document.dispatchEvent(new CustomEvent('sia-outfits-changed'));
+            }
+
             async function genImageWithRefs(promptText, refs) {
                 const g = window.SIA_GEN;
                 const parts = [{ text: promptText }];
@@ -1156,7 +1182,11 @@
                             </div>
                             <div class="card">
                                 <div class="flex items-center gap-3 mb-4"><span class="step-num">2</span><h3 class="font-semibold text-gray-800" data-i18n="pt.outfit-label"></h3></div>
-                                <input id="${p}-outfit" type="text" maxlength="120" class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm" data-i18n-placeholder="pt.outfit-ph" placeholder="contoh: gamis hitam elegan / kaos putih + jeans">
+                                <div class="flex gap-2">
+                                    <input id="${p}-outfit" type="text" maxlength="120" class="flex-1 min-w-0 border border-gray-300 rounded-lg px-3 py-2.5 text-sm" data-i18n-placeholder="pt.outfit-ph" placeholder="contoh: gamis hitam elegan / kaos putih + jeans">
+                                    <button type="button" id="${p}-outfit-save" class="btn-secondary rounded-lg px-3 flex-shrink-0" style="min-width:44px;" title="Simpan outfit" aria-label="Simpan outfit"><i class="fas fa-bookmark"></i></button>
+                                </div>
+                                <div id="${p}-outfit-chips" class="flex flex-wrap gap-2 mt-3"></div>
                             </div>
                             <div class="card">
                                 <div class="flex items-center gap-3 mb-4"><span class="step-num">3</span><h3 class="font-semibold text-gray-800" data-i18n="pt.step-ratio"></h3></div>
@@ -1218,6 +1248,45 @@
                         if (attr === 'data-ratio') selectedRatio = btn.dataset.ratio;
                         if (attr === 'data-count') selectedCount = Number(btn.dataset.count);
                     });
+                });
+
+                // ---- Chip outfit tersimpan ----
+                const outfitInput = document.getElementById(`${p}-outfit`);
+                const outfitChips = document.getElementById(`${p}-outfit-chips`);
+                function renderOutfits() {
+                    const esc = window.escHtml;
+                    outfitChips.innerHTML = window.getOutfits().map((o, i) =>
+                        `<button type="button" class="option-btn" data-outfit-idx="${i}" style="display:inline-flex;align-items:center;gap:0.4rem;min-height:40px;">` +
+                        `${esc(o)}<span data-outfit-del="${i}" class="text-gray-400 hover:text-red-500 px-1" role="button" aria-label="Hapus outfit">×</span></button>`
+                    ).join('');
+                }
+                document.addEventListener('sia-outfits-changed', renderOutfits);
+                renderOutfits();
+                outfitChips.addEventListener('click', (e) => {
+                    const del = e.target.closest('[data-outfit-del]');
+                    if (del) {
+                        const list = window.getOutfits();
+                        list.splice(Number(del.dataset.outfitDel), 1);
+                        setOutfits(list);
+                        return;
+                    }
+                    const chip = e.target.closest('[data-outfit-idx]');
+                    if (!chip) return;
+                    outfitInput.value = window.getOutfits()[Number(chip.dataset.outfitIdx)] || '';
+                    outfitChips.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+                    chip.classList.add('selected');
+                });
+                outfitInput.addEventListener('input', () => {
+                    outfitChips.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+                });
+                document.getElementById(`${p}-outfit-save`).addEventListener('click', async () => {
+                    const v = outfitInput.value.trim();
+                    if (!v) { await window.uiNotify(window.t('err.outfit-empty')); return; }
+                    const list = window.getOutfits();
+                    if (list.some(o => o.toLowerCase() === v.toLowerCase())) { await window.uiNotify(window.t('pt.outfit-dup')); return; }
+                    if (list.length >= OUTFIT_MAX) { await window.uiNotify(window.t('err.outfit-limit')); return; }
+                    list.push(v.slice(0, 120));
+                    setOutfits(list);
                 });
 
                 async function renderStrip() {
@@ -1564,8 +1633,13 @@
             window.escHtml = function (s) {
                 return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
             };
-            window.APP_VERSION = '1.1';
+            window.APP_VERSION = '1.2';
             window.CHANGELOG = [
+                { version: '1.2', date: '17 Sep 2026', changes: [
+                    { id: 'Outfit bisa disimpan (maksimal 10) - muncul sebagai pilihan cepat di semua sesi foto, klik tanda silang untuk menghapus',
+                      en: 'Outfits can now be saved (up to 10) - they appear as quick picks in every photo session; click the cross to delete',
+                      ms: 'Outfit kini boleh disimpan (maksimum 10) - muncul sebagai pilihan pantas dalam setiap sesi foto; klik tanda pangkah untuk memadam' },
+                ] },
                 { version: '1.1', date: '17 Sep 2026', changes: [
                     { id: 'Outfit custom (opsional) di setiap sesi foto - outfit bisa disesuaikan tanpa mengubah wajah karakter',
                       en: 'Custom outfit (optional) in every photo session - adjust the outfit without changing the character\'s face',
