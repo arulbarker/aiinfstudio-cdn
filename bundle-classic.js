@@ -731,8 +731,12 @@
 
                 // ---- Sync cloud <-> lokal ----
                 // Aturan emas: JANGAN pernah hapus lokal item cloud:false (pending upload).
+                // Anti dobel-jalan: dipanggil dari halaman login (preload) DAN openApp.
+                window.__syncingChars = false;
                 window.syncChars = async function () {
                     if (!localStorage.getItem('sia_email')) return;
+                    if (window.__syncingChars) return;
+                    window.__syncingChars = true;
                     try {
                         const server = await window.charCloud.list();
                         if (!server) return;
@@ -750,19 +754,22 @@
                                 } catch (e) {}
                             }
                         }
-                        for (const s of server) {
-                            if (!localIds.has(String(s.id))) {
-                                const blobs = [];
-                                let ok = true;
-                                for (let a = 0; a < 5; a++) {
-                                    const b64 = await window.charCloud.get(s.id, a);
-                                    if (!b64) { ok = false; break; }
-                                    blobs.push(window.b64ToBlob(b64, 'image/jpeg'));
+                        // Download karakter yang belum ada lokal — 5 angle PARALEL (bukan satu-satu)
+                        await Promise.all(server.filter(s => !localIds.has(String(s.id))).map(async (s) => {
+                            try {
+                                const b64s = await Promise.all([0, 1, 2, 3, 4].map(a => window.charCloud.get(s.id, a)));
+                                if (b64s.every(Boolean)) {
+                                    await window.charDB.put({
+                                        id: String(s.id), name: s.name, niche: s.niche, cfg: s.cfg || {},
+                                        blobs: b64s.map(b => window.b64ToBlob(b, 'image/jpeg')),
+                                        createdAt: s.createdAt, cloud: true
+                                    });
+                                    document.dispatchEvent(new CustomEvent('sia-chars-changed'));
                                 }
-                                if (ok) await window.charDB.put({ id: String(s.id), name: s.name, niche: s.niche, cfg: s.cfg || {}, blobs, createdAt: s.createdAt, cloud: true });
-                            }
-                        }
+                            } catch (e) {}
+                        }));
                     } catch (e) { console.error('syncChars:', e); }
+                    window.__syncingChars = false;
                     document.dispatchEvent(new CustomEvent('sia-chars-changed'));
                 };
 
@@ -839,6 +846,7 @@
                 const savedName = localStorage.getItem('sia_name');
                 if (savedEmail && savedName) {
                     setLoading(true);
+                    if (window.syncChars) window.syncChars();   // preload karakter SAMBIL cek sesi — tanpa await
                     api('cek', savedEmail)
                         .then(d => {
                             setLoading(false);
@@ -1633,8 +1641,13 @@
             window.escHtml = function (s) {
                 return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
             };
-            window.APP_VERSION = '1.2';
+            window.APP_VERSION = '1.3';
             window.CHANGELOG = [
+                { version: '1.3', date: '17 Sep 2026', changes: [
+                    { id: 'Karakter dimuat lebih cepat: sync dimulai sejak halaman login dan download 5 angle berjalan paralel - masuk app data langsung siap',
+                      en: 'Characters load faster: sync starts from the login screen and the 5 angles download in parallel - data is ready when you enter',
+                      ms: 'Watak dimuat lebih pantas: penyegerakan bermula dari skrin log masuk dan 5 sudut dimuat turun selari - data terus sedia' },
+                ] },
                 { version: '1.2', date: '17 Sep 2026', changes: [
                     { id: 'Outfit bisa disimpan (maksimal 10) - muncul sebagai pilihan cepat di semua sesi foto, klik tanda silang untuk menghapus',
                       en: 'Outfits can now be saved (up to 10) - they appear as quick picks in every photo session; click the cross to delete',
