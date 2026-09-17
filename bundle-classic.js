@@ -709,6 +709,11 @@
                         const d = await fetch(this._q('char_get', `&id=${encodeURIComponent(id)}&angle=${angle}`)).then(r => r.json());
                         return d.status === 'SUKSES' ? d.base64 : null;
                     },
+                    async getAll(id) {
+                        // 5 angle dalam 1 round-trip (latensi GAS dominan, bukan bandwidth)
+                        const d = await fetch(this._q('char_get_all', `&id=${encodeURIComponent(id)}`)).then(r => r.json());
+                        return (d.status === 'SUKSES' && Array.isArray(d.angles) && d.angles.length === 5) ? d.angles : null;
+                    },
                     async del(id) {
                         try {
                             const d = await fetch(this._q('char_del', `&id=${encodeURIComponent(id)}`)).then(r => r.json());
@@ -754,10 +759,12 @@
                                 } catch (e) {}
                             }
                         }
-                        // Download karakter yang belum ada lokal — 5 angle PARALEL (bukan satu-satu)
+                        // Download karakter yang belum ada lokal — SEMUA angle dalam 1 request (char_get_all),
+                        // fallback ke per-angle paralel kalau backend lama
                         await Promise.all(server.filter(s => !localIds.has(String(s.id))).map(async (s) => {
                             try {
-                                const b64s = await Promise.all([0, 1, 2, 3, 4].map(a => window.charCloud.get(s.id, a)));
+                                let b64s = await window.charCloud.getAll(s.id);
+                                if (!b64s) b64s = await Promise.all([0, 1, 2, 3, 4].map(a => window.charCloud.get(s.id, a)));
                                 if (b64s.every(Boolean)) {
                                     await window.charDB.put({
                                         id: String(s.id), name: s.name, niche: s.niche, cfg: s.cfg || {},
@@ -1020,17 +1027,26 @@
                     if (existing.length >= 2) { await window.uiNotify(tf('err.char-limit', 'Maksimal 2 karakter. Hapus salah satu dulu.')); return; }
                     busy = true;
                     saveBtn.disabled = true;
+                    // Kompres tiap angle (PNG mentah Gemini bisa 2+ MB) → JPEG 1024px ±10x lebih kecil.
+                    // Efek: upload cepat, sync antar perangkat cepat, referensi generate tetap tajam.
+                    const compressed = [];
+                    for (const raw of angleImages) {
+                        try {
+                            const c = await window.compressImage('data:image/png;base64,' + raw, 1024, 0.85);
+                            compressed.push(c.b64);
+                        } catch (e) { compressed.push(raw); }
+                    }
                     const rec = {
                         id: 'c' + Date.now(),
                         name: f.name,
                         niche: f.niche,
                         cfg: f,
-                        blobs: angleImages.map(b64 => window.b64ToBlob(b64, 'image/jpeg')),
+                        blobs: compressed.map(b64 => window.b64ToBlob(b64, 'image/jpeg')),
                         createdAt: new Date().toISOString(),
                         cloud: false
                     };
                     try {
-                        const d = await window.charCloud.upload({ id: rec.id, name: rec.name, niche: rec.niche, cfg: rec.cfg, angles: angleImages.slice(0, 5) });
+                        const d = await window.charCloud.upload({ id: rec.id, name: rec.name, niche: rec.niche, cfg: rec.cfg, angles: compressed.slice(0, 5) });
                         if (d && d.status === 'SUKSES') {
                             rec.cloud = true;
                         } else if (d && d.code === 'LIMIT') {
@@ -1547,7 +1563,7 @@
                     const uiLang = window.getLang();
                     const charNiche = (char && char.niche) || 'wisdom quotes';
                     const nicheOpts = [charNiche].concat(NICHE_OPTIONS.filter(n => n !== charNiche));
-                    const optHtml = nicheOpts.map(n => `<option value="${n.replace(/"/g, '')}">${n}</option>`).join('');
+                    const optHtml = nicheOpts.map(n => `<option value="${window.escHtml(n)}">${window.escHtml(n)}</option>`).join('');
                     const langOpt = ['id', 'en', 'ms'].map(l => `<option value="${l}"${l === uiLang ? ' selected' : ''}>${l.toUpperCase()}</option>`).join('');
                     const body = `
                         <div class="grid grid-cols-2 gap-2 mb-2">
@@ -1641,8 +1657,16 @@
             window.escHtml = function (s) {
                 return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
             };
-            window.APP_VERSION = '1.3';
+            window.APP_VERSION = '1.4';
             window.CHANGELOG = [
+                { version: '1.4', date: '18 Sep 2026', changes: [
+                    { id: 'Muat karakter jauh lebih cepat: foto angle dikompres (10x lebih kecil) dan download 5 angle jadi 1 request',
+                      en: 'Characters load much faster: angle photos are compressed (10x smaller) and all 5 angles download in a single request',
+                      ms: 'Watak dimuat jauh lebih pantas: foto sudut dimampatkan (10x lebih kecil) dan 5 sudut dimuat turun dalam 1 permintaan' },
+                    { id: 'Perbaikan keamanan pada webhook pembelian dan tampilan niche',
+                      en: 'Security fixes on the purchase webhook and niche display',
+                      ms: 'Pembaikan keselamatan pada webhook pembelian dan paparan niche' },
+                ] },
                 { version: '1.3', date: '17 Sep 2026', changes: [
                     { id: 'Karakter dimuat lebih cepat: sync dimulai sejak halaman login dan download 5 angle berjalan paralel - masuk app data langsung siap',
                       en: 'Characters load faster: sync starts from the login screen and the 5 angles download in parallel - data is ready when you enter',
