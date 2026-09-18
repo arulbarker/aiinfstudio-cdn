@@ -1,6 +1,4 @@
 
-        const apiKey = "";
-
         document.addEventListener('DOMContentLoaded', () => {
 
             // === i18n engine ===
@@ -999,6 +997,7 @@
 
             // === TAB: BUAT INFLUENCER ===
             (function () {
+                const apiKey = "";
                 const IMG_MODEL = 'gemini-2.5-flash-image-preview';
                 const API_URL = m => `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${apiKey}`;
                 const SAFETY = [
