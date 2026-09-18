@@ -344,6 +344,7 @@
                     'Bicara ke Kamera': 'Talking to Camera', 'Senyum ke Kamera': 'Smiling at Camera', 'Gestur Tangan': 'Hand Gestures',
                     'Ketawa Natural': 'Natural Laugh', 'Pakai Headphone': 'Wearing Headphones', 'Wawancara Tamu': 'Interviewing a Guest', 'Angle Samping': 'Side Angle',
                     'Gelap Elegan': 'Dark Elegant', 'Hangat Cozy': 'Warm Cozy', 'Minimalis Terang': 'Bright Minimalist', 'Broadcast Neon': 'Neon Broadcast',
+                    'Panggung Seminar': 'Seminar Stage', 'Berdiri Pegang Mic': 'Standing with Mic', 'Gestur ke Penonton': 'Gesturing to Audience',
                     'Baca Quran di Kamar': 'Reading Quran on Bed', 'Baca Quran Dekat Jendela': 'Quran by the Window',
                     'Berdoa Setelah Sholat': 'Dua After Prayer', 'Dzikir dengan Tasbih': 'Dhikr with Prayer Beads',
                     'Duduk di Sajadah': 'On the Prayer Mat', 'Peluk Quran': 'Holding the Quran',
@@ -368,6 +369,7 @@
                     'Baca Quran di Kamar': 'Baca Quran di Bilik', 'Baca Quran Dekat Jendela': 'Baca Quran Tepi Tingkap',
                     'Berdoa Setelah Sholat': 'Berdoa Selepas Solat', 'Dzikir dengan Tasbih': 'Zikir dengan Tasbih',
                     'Duduk di Sajadah': 'Duduk di Sejadah',
+                    'Gestur ke Penonton': 'Gerak ke Penonton',
                     'Detail Outfit': 'Detail Pakaian', 'Selfie di Lift': 'Selfie di Lif',
                     'Latihan di Gym': 'Bersenam di Gym', 'Naik Gunung': 'Mendaki', 'Stretching di Taman': 'Regangan di Taman', 'Selfie Habis Workout': 'Selfie Selepas Bersenam'
                 }
@@ -1282,13 +1284,15 @@
                 'dark-luxury': 'an aesthetic dark podcast studio: deep charcoal wall panels, warm amber practical lamps glowing softly, a dark wooden desk, a professional broadcast microphone on a boom arm in front of the person, subtle green plants and a softly lit bookshelf in the background, moody premium cinematic atmosphere',
                 'warm-cozy': 'a warm aesthetic podcast studio: vertical wood slat wall panels with warm amber LED light strips glowing between them, lush green plants, a floating wooden shelf with books, decor and a small warm lamp, a dark wooden desk, a professional broadcast microphone on a boom arm beside the person, warm golden cozy glow',
                 'minimal-bright': 'a clean minimalist podcast studio: soft white and beige walls, gentle diffused daylight, a light wooden desk with a professional broadcast microphone on a boom arm in front of the person, airy premium editorial look',
-                'broadcast-neon': 'a modern broadcast studio: dark walls with subtle warm neon accent lighting strips, a sleek desk with a professional broadcast microphone on a boom arm in front of the person, premium late-night show atmosphere'
+                'broadcast-neon': 'a modern broadcast studio: dark walls with subtle warm neon accent lighting strips, a sleek desk with a professional broadcast microphone on a boom arm in front of the person, premium late-night show atmosphere',
+                'stage-seminar': 'a professional seminar stage: warm spotlights from above, an elegant dark stage backdrop with soft golden bokeh lights, blurred audience silhouettes in the dark foreground, premium live talkshow event atmosphere'
             };
             const STUDIO_SET_LABELS = {
                 'dark-luxury': 'Gelap Elegan',
                 'warm-cozy': 'Hangat Cozy',
                 'minimal-bright': 'Minimalis Terang',
-                'broadcast-neon': 'Broadcast Neon'
+                'broadcast-neon': 'Broadcast Neon',
+                'stage-seminar': 'Panggung Seminar'
             };
 
             function clothingText(outfit, productCount, styleStr) {
@@ -1838,7 +1842,9 @@
                     { val: 'laughing naturally mid-conversation at the studio desk, facing the camera', label: 'Ketawa Natural' },
                     { val: 'wearing studio headphones, listening thoughtfully, facing the camera', label: 'Pakai Headphone' },
                     { val: 'interviewing a guest across the table, seen from a flattering three-quarter angle', label: 'Wawancara Tamu' },
-                    { val: 'speaking into the microphone seen from a cinematic three-quarter side angle', label: 'Angle Samping' }
+                    { val: 'speaking into the microphone seen from a cinematic three-quarter side angle', label: 'Angle Samping' },
+                    { val: 'standing on stage holding a wireless handheld microphone, speaking confidently', label: 'Berdiri Pegang Mic' },
+                    { val: 'standing on stage holding a handheld microphone, smiling and gesturing warmly', label: 'Gestur ke Penonton' }
                 ]
             });
             createPhotoTab({
@@ -2022,8 +2028,13 @@
             window.escHtml = function (s) {
                 return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
             };
-            window.APP_VERSION = '2.2';
+            window.APP_VERSION = '2.3';
             window.CHANGELOG = [
+                { version: '2.3', date: '18 Sep 2026', changes: [
+                    { id: 'Set baru "Panggung Seminar" + 2 scene berdiri pegang mic (bicara ke penonton) di tab Podcast/Studio',
+                      en: 'New "Seminar Stage" set + 2 standing-with-mic scenes (speaking to the audience) in the Podcast/Studio tab',
+                      ms: 'Set baharu "Panggung Seminar" + 2 scene berdiri pegang mic (bercakap kepada penonton) dalam tab Podcast/Studio' },
+                ] },
                 { version: '2.2', date: '18 Sep 2026', changes: [
                     { id: 'Set studio "Hangat Cozy" dipertajam: panel kayu vertikal + strip lampu amber + tanaman & rak pajangan (gaya studio podcast Indonesia yang paling populer)',
                       en: 'The "Warm Cozy" studio set is sharpened: vertical wood slats + amber light strips + plants & decor shelf (the most popular Indonesian podcast studio look)',
