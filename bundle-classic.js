@@ -68,6 +68,9 @@
                     'pt.no-char': 'Belum ada karakter. Buat dulu di menu Buat AI Influencer.',
                     'pt.step-scene': 'Pilih Scene',
                     'pt.step-cam': 'Gaya Foto',
+                    'pt.step-set': 'Set Studio',
+                    'pt.program-label': 'Nama Program di Backdrop (Opsional)',
+                    'pt.program-ph': 'contoh: Ruang Bertumbuh',
                     'pt.step-ratio': 'Rasio Foto',
                     'pt.step-count': 'Jumlah Foto',
                     'pt.generate': 'Generate Foto',
@@ -163,6 +166,9 @@
                     'pt.no-char': 'No character yet. Create one in the Create AI Influencer menu.',
                     'pt.step-scene': 'Choose a Scene',
                     'pt.step-cam': 'Photo Style',
+                    'pt.step-set': 'Studio Set',
+                    'pt.program-label': 'Show Name on Backdrop (Optional)',
+                    'pt.program-ph': 'e.g. Growth Room',
                     'pt.step-ratio': 'Photo Ratio',
                     'pt.step-count': 'Number of Photos',
                     'pt.generate': 'Generate Photos',
@@ -258,6 +264,9 @@
                     'pt.no-char': 'Belum ada watak. Cipta dahulu di menu Cipta AI Influencer.',
                     'pt.step-scene': 'Pilih Scene',
                     'pt.step-cam': 'Gaya Foto',
+                    'pt.step-set': 'Set Studio',
+                    'pt.program-label': 'Nama Program di Backdrop (Pilihan)',
+                    'pt.program-ph': 'cth: Ruang Bertumbuh',
                     'pt.step-ratio': 'Nisbah Foto',
                     'pt.step-count': 'Bilangan Foto',
                     'pt.generate': 'Jana Foto',
@@ -329,8 +338,9 @@
                     'Naik Kereta': 'On the Train', 'Jajan Street Food': 'Street Food Run', 'Hujan-hujanan': 'Rainy Day Walk',
                     'Di Minimarket': 'At the Minimart', 'Rebahan Main HP': 'Scrolling in Bed',
                     'Selfie Sendiri': 'Selfie (Self-Shot)', 'Difotoin Orang': 'Taken by Someone',
-                    'Depan Mic Podcast': 'At the Podcast Mic', 'Ngobrol Pakai Headphone': 'Talking with Headphones',
-                    'Behind the Scenes Studio': 'Studio Behind the Scenes', 'Wawancara Tamu': 'Interviewing a Guest', 'Ketawa Saat Rekaman': 'Laughing While Recording',
+                    'Bicara ke Kamera': 'Talking to Camera', 'Senyum ke Kamera': 'Smiling at Camera', 'Gestur Tangan': 'Hand Gestures',
+                    'Ketawa Natural': 'Natural Laugh', 'Pakai Headphone': 'Wearing Headphones', 'Wawancara Tamu': 'Interviewing a Guest', 'Angle Samping': 'Side Angle',
+                    'Gelap Elegan': 'Dark Elegant', 'Hangat Cozy': 'Warm Cozy', 'Minimalis Terang': 'Bright Minimalist', 'Broadcast Neon': 'Neon Broadcast',
                     'Mirror Selfie Outfit': 'Outfit Mirror Selfie', 'Detail Outfit': 'Outfit Details', 'Selfie di Lift': 'Elevator Selfie', 'Outfit di Kafe Estetik': 'Cafe Outfit Shot',
                     'Latihan di Gym': 'Gym Workout', 'Lari Pagi': 'Morning Run', 'Yoga di Rumah': 'Yoga at Home', 'Naik Gunung': 'Hiking',
                     'Stretching di Taman': 'Stretching at the Park', 'Selfie Habis Workout': 'Post-Workout Selfie'
@@ -346,7 +356,9 @@
                     'Naik Motor': 'Naik Motosikal', 'Nyetir Mobil': 'Memandu Kereta', 'Naik Kereta': 'Naik Keretapi',
                     'Jajan Street Food': 'Beli Makanan Jalanan', 'Hujan-hujanan': 'Jalan Ketika Hujan', 'Rebahan Main HP': 'Baring Main Telefon',
                     'Difotoin Orang': 'Difotokan Orang',
-                    'Ngobrol Pakai Headphone': 'Berbual Pakai Fon Kepala', 'Wawancara Tamu': 'Menemu Bual Tetamu', 'Ketawa Saat Rekaman': 'Ketawa Semasa Rakaman',
+                    'Bicara ke Kamera': 'Bercakap ke Kamera', 'Gestur Tangan': 'Gerak Tangan', 'Ketawa Natural': 'Ketawa Semula Jadi',
+                    'Pakai Headphone': 'Pakai Fon Kepala', 'Wawancara Tamu': 'Menemu Bual Tetamu', 'Angle Samping': 'Sudut Sisi',
+                    'Minimalis Terang': 'Minimalis Cerah',
                     'Detail Outfit': 'Detail Pakaian', 'Selfie di Lift': 'Selfie di Lif',
                     'Latihan di Gym': 'Bersenam di Gym', 'Naik Gunung': 'Mendaki', 'Stretching di Taman': 'Regangan di Taman', 'Selfie Habis Workout': 'Selfie Selepas Bersenam'
                 }
@@ -1256,6 +1268,49 @@
                 '3:4': 'portrait 3:4 format',
                 '16:9': 'wide 16:9 landscape orientation'
             };
+            // Set studio TERKUNCI (deskripsi identik tiap generate = feed konsisten seperti akun podcast profesional)
+            const STUDIO_SETS = {
+                'dark-luxury': 'an aesthetic dark podcast studio: deep charcoal wall panels, warm amber practical lamps glowing softly, a dark wooden desk, a professional broadcast microphone on a boom arm in front of the person, subtle green plants and a softly lit bookshelf in the background, moody premium cinematic atmosphere',
+                'warm-cozy': 'a cozy warm podcast studio: warm wood slat wall, soft warm bulb lights and a table lamp, beige and brown tones, a wooden desk with a professional broadcast microphone on a boom arm in front of the person, inviting cinematic warm glow',
+                'minimal-bright': 'a clean minimalist podcast studio: soft white and beige walls, gentle diffused daylight, a light wooden desk with a professional broadcast microphone on a boom arm in front of the person, airy premium editorial look',
+                'broadcast-neon': 'a modern broadcast studio: dark walls with subtle warm neon accent lighting strips, a sleek desk with a professional broadcast microphone on a boom arm in front of the person, premium late-night show atmosphere'
+            };
+            const STUDIO_SET_LABELS = {
+                'dark-luxury': 'Gelap Elegan',
+                'warm-cozy': 'Hangat Cozy',
+                'minimal-bright': 'Minimalis Terang',
+                'broadcast-neon': 'Broadcast Neon'
+            };
+
+            function clothingText(outfit, productCount, f, fallbackStyle) {
+                if (productCount > 0) {
+                    return `The FIRST TWO reference images show the person. The remaining ${productCount} reference image(s) are PRODUCT references ` +
+                        `(clothing, shoes, bags, accessories). The person MUST wear or use these exact products - keep each product's design, ` +
+                        `colors, materials, logos and details EXACTLY as shown in the product references, combined into one natural complete outfit.` +
+                        (outfit ? ` Additional outfit notes: ${outfit}.` : '');
+                }
+                if (outfit) {
+                    return `Wearing: ${outfit} (outfit may differ from the reference photos - only face and identity must stay the same).`;
+                }
+                return `Clothing style consistent with: ${f.style || fallbackStyle}.`;
+            }
+
+            function buildStudioPrompt(scene, ratio, char, outfit, productCount, setKey, program) {
+                const f = (char && char.cfg) || {};
+                const sign = program
+                    ? `An elegant physical sign with the text "${program}" in EXACT correct spelling is part of the backdrop set behind the person, softly lit (printed or neon signage built into the set - never a digital text overlay). `
+                    : '';
+                return `Keep the person EXACTLY as in the first two reference photos - same face, same hair, same skin tone, ` +
+                    `do NOT alter the person's identity. ` +
+                    `Professional aesthetic podcast content photo, looking like a frame from a high-end podcast video: ` +
+                    `the person ${scene}, in ${STUDIO_SETS[setKey] || STUDIO_SETS['dark-luxury']}. ` +
+                    sign +
+                    clothingText(outfit, productCount, f, 'elegant modest clothing') + ' ' +
+                    `Shot on a professional cinema camera, shallow depth of field, soft warm key light on the face, ` +
+                    `cinematic color grade, consistent premium set design and framing across the whole feed. ` +
+                    `${RATIO_TEXT[ratio] || RATIO_TEXT['9:16']}, ${program ? 'no watermark' : 'no text, no watermark'}.`;
+            }
+
             const CAM_TEXT = {
                 selfie: 'Shot as a real SELFIE taken by the person themselves with their phone front camera: ' +
                     'one arm extended toward the camera holding the phone (arm and hand partially visible at the edge of the frame), ' +
@@ -1265,17 +1320,7 @@
             };
             function buildPhotoPrompt(scene, ratio, char, outfit, productCount, cam) {
                 const f = (char && char.cfg) || {};
-                let clothing;
-                if (productCount > 0) {
-                    clothing = `The FIRST TWO reference images show the person. The remaining ${productCount} reference image(s) are PRODUCT references ` +
-                        `(clothing, shoes, bags, accessories). The person MUST wear or use these exact products - keep each product's design, ` +
-                        `colors, materials, logos and details EXACTLY as shown in the product references, combined into one natural complete outfit.` +
-                        (outfit ? ` Additional outfit notes: ${outfit}.` : '');
-                } else if (outfit) {
-                    clothing = `Wearing: ${outfit} (outfit may differ from the reference photos - only face and identity must stay the same).`;
-                } else {
-                    clothing = `Clothing style consistent with: ${f.style || 'modern casual clothing'}.`;
-                }
+                const clothing = clothingText(outfit, productCount, f, 'modern casual clothing');
                 return `Keep the person EXACTLY as in the first two reference photos - same face, same hair, same skin tone, ` +
                     `do NOT alter the person's identity. Only change the scene: ${scene}. ` +
                     clothing + ` ` +
@@ -1362,13 +1407,22 @@
                                     ${cfg.scenes.map(s => `<button type="button" class="option-btn" data-scene="${s.val}">${s.label}</button>`).join('')}
                                 </div>
                             </div>
+                            ${cfg.studio ? `
+                            <div class="card">
+                                <div class="flex items-center gap-3 mb-4"><span class="step-num">2</span><h3 class="font-semibold text-gray-800" data-i18n="pt.step-set"></h3></div>
+                                <div class="grid grid-cols-2 gap-2" data-set-group>
+                                    ${Object.keys(STUDIO_SETS).map((k, i) => `<button type="button" class="option-btn${i === 0 ? ' selected' : ''}" data-set="${k}">${STUDIO_SET_LABELS[k]}</button>`).join('')}
+                                </div>
+                                <label class="text-xs font-medium text-gray-500 block mt-4 mb-1" data-i18n="pt.program-label"></label>
+                                <input id="${p}-program" type="text" maxlength="40" class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm" data-i18n-placeholder="pt.program-ph" placeholder="contoh: Ruang Bertumbuh">
+                            </div>` : `
                             <div class="card">
                                 <div class="flex items-center gap-3 mb-4"><span class="step-num">2</span><h3 class="font-semibold text-gray-800" data-i18n="pt.step-cam"></h3></div>
                                 <div class="grid grid-cols-2 gap-2" data-cam-group>
                                     <button type="button" class="option-btn selected" data-cam="selfie">Selfie Sendiri</button>
                                     <button type="button" class="option-btn" data-cam="candid">Difotoin Orang</button>
                                 </div>
-                            </div>
+                            </div>`}
                             <div class="card">
                                 <div class="flex items-center gap-3 mb-4"><span class="step-num">3</span><h3 class="font-semibold text-gray-800" data-i18n="pt.outfit-label"></h3></div>
                                 <div class="flex gap-2">
@@ -1423,6 +1477,7 @@
                 let selectedCount = 4;
                 let selectedRatio = '9:16';
                 let selectedCam = 'selfie';
+                let selectedSet = 'dark-luxury';
                 let results = [];
                 let busy = false;
 
@@ -1432,13 +1487,16 @@
                 const strip = document.getElementById(`${p}-char-strip`);
 
                 // Chip single-select per grup
-                [['data-scene-group', 'data-scene'], ['data-cam-group', 'data-cam'], ['data-ratio-group', 'data-ratio'], ['data-count-group', 'data-count']].forEach(([group, attr]) => {
-                    host.querySelector(`[${group}]`).addEventListener('click', (e) => {
+                [['data-scene-group', 'data-scene'], ['data-cam-group', 'data-cam'], ['data-set-group', 'data-set'], ['data-ratio-group', 'data-ratio'], ['data-count-group', 'data-count']].forEach(([group, attr]) => {
+                    const groupEl = host.querySelector(`[${group}]`);
+                    if (!groupEl) return; // grup opsional (cam vs set) tergantung jenis tab
+                    groupEl.addEventListener('click', (e) => {
                         const btn = e.target.closest(`button[${attr}]`);
                         if (!btn) return;
                         host.querySelectorAll(`[${group}] .option-btn`).forEach(b => b.classList.remove('selected'));
                         btn.classList.add('selected');
                         if (attr === 'data-cam') selectedCam = btn.dataset.cam;
+                        if (attr === 'data-set') selectedSet = btn.dataset.set;
                         if (attr === 'data-ratio') selectedRatio = btn.dataset.ratio;
                         if (attr === 'data-count') selectedCount = Number(btn.dataset.count);
                     });
@@ -1653,9 +1711,13 @@
                     dlAll.classList.add('hidden');
                     grid.innerHTML = picks.map((_, i) => spinnerCard(i + 1)).join('');
 
+                    const programVal = cfg.studio ? (document.getElementById(`${p}-program`).value.trim()) : '';
                     async function genOne(index) {
-                        const b64 = await genImageWithRefs(buildPhotoPrompt(picks[index - 1], selectedRatio, char, outfit, prodB64s.length, selectedCam), [refFront, refBody, ...prodB64s]);
-                        results[index - 1] = { b64, scene: picks[index - 1], outfit, oimgIds, cam: selectedCam, filename: `${p}-${index}.png` };
+                        const promptText = cfg.studio
+                            ? buildStudioPrompt(picks[index - 1], selectedRatio, char, outfit, prodB64s.length, selectedSet, programVal)
+                            : buildPhotoPrompt(picks[index - 1], selectedRatio, char, outfit, prodB64s.length, selectedCam);
+                        const b64 = await genImageWithRefs(promptText, [refFront, refBody, ...prodB64s]);
+                        results[index - 1] = { b64, scene: picks[index - 1], outfit, oimgIds, cam: selectedCam, set: selectedSet, program: programVal, filename: `${p}-${index}.png` };
                         const card = document.getElementById(`${p}-card-${index}`);
                         if (card) card.innerHTML = cardInner(index, b64);
                     }
@@ -1710,8 +1772,11 @@
                             const rf = await window.blobToB64(char2.blobs[0]);
                             const rb = await window.blobToB64(char2.blobs[4]);
                             const prodRegen = await selectedProductB64s(r.oimgIds || []);
-                            const b64 = await genImageWithRefs(buildPhotoPrompt(r.scene, selectedRatio, char2, r.outfit || '', prodRegen.length, r.cam || selectedCam), [rf, rb, ...prodRegen]);
-                            results[idx] = { b64, scene: r.scene, outfit: r.outfit, oimgIds: r.oimgIds, cam: r.cam, filename: r.filename };
+                            const rPrompt = cfg.studio
+                                ? buildStudioPrompt(r.scene, selectedRatio, char2, r.outfit || '', prodRegen.length, r.set || selectedSet, r.program || '')
+                                : buildPhotoPrompt(r.scene, selectedRatio, char2, r.outfit || '', prodRegen.length, r.cam || selectedCam);
+                            const b64 = await genImageWithRefs(rPrompt, [rf, rb, ...prodRegen]);
+                            results[idx] = { b64, scene: r.scene, outfit: r.outfit, oimgIds: r.oimgIds, cam: r.cam, set: r.set, program: r.program, filename: r.filename };
                             card.innerHTML = cardInner(idx + 1, b64);
                         } catch (err) {
                             if (window.logDebug) window.logDebug(p + '-regen', String(err));
@@ -1752,12 +1817,15 @@
             });
             createPhotoTab({
                 tab: 'podcast',
+                studio: true,
                 scenes: [
-                    { val: 'sitting in front of a podcast microphone in a studio', label: 'Depan Mic Podcast' },
-                    { val: 'wearing headphones talking casually in a podcast studio', label: 'Ngobrol Pakai Headphone' },
-                    { val: 'behind the scenes of a podcast studio recording', label: 'Behind the Scenes Studio' },
-                    { val: 'interviewing a guest across the table in a podcast studio', label: 'Wawancara Tamu' },
-                    { val: 'laughing naturally during a podcast recording', label: 'Ketawa Saat Rekaman' }
+                    { val: 'sitting at the studio desk facing the camera, speaking warmly into the microphone', label: 'Bicara ke Kamera' },
+                    { val: 'sitting at the studio desk facing the camera, smiling warmly with relaxed posture', label: 'Senyum ke Kamera' },
+                    { val: 'talking expressively with natural hand gestures, facing the camera', label: 'Gestur Tangan' },
+                    { val: 'laughing naturally mid-conversation at the studio desk, facing the camera', label: 'Ketawa Natural' },
+                    { val: 'wearing studio headphones, listening thoughtfully, facing the camera', label: 'Pakai Headphone' },
+                    { val: 'interviewing a guest across the table, seen from a flattering three-quarter angle', label: 'Wawancara Tamu' },
+                    { val: 'speaking into the microphone seen from a cinematic three-quarter side angle', label: 'Angle Samping' }
                 ]
             });
             createPhotoTab({
@@ -1925,8 +1993,13 @@
             window.escHtml = function (s) {
                 return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
             };
-            window.APP_VERSION = '1.9';
+            window.APP_VERSION = '2.0';
             window.CHANGELOG = [
+                { version: '2.0', date: '18 Sep 2026', changes: [
+                    { id: 'Tab Podcast jadi Studio Estetik: 4 pilihan set studio terkunci (konsisten antar post), nama program di backdrop, komposisi menghadap kamera, lighting & kamera sinematik profesional',
+                      en: 'Podcast tab is now an Aesthetic Studio: 4 locked studio sets (consistent across posts), show name on the backdrop, camera-facing composition, professional cinematic lighting & camera',
+                      ms: 'Tab Podcast kini Studio Estetik: 4 set studio terkunci (konsisten antara post), nama program pada backdrop, komposisi menghadap kamera, pencahayaan & kamera sinematik profesional' },
+                ] },
                 { version: '1.9', date: '18 Sep 2026', changes: [
                     { id: 'Pengaman data: kalau database server kosong tak wajar, karakter & foto outfit di perangkat otomatis di-upload balik (bukan ikut terhapus)',
                       en: 'Data safeguard: if the server database is unexpectedly empty, characters & outfit photos on your device are re-uploaded automatically (not deleted)',
