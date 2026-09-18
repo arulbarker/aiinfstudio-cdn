@@ -17,6 +17,7 @@
                     'nav.section-foto': 'Sesi Foto',
                     'nav.lifestyle': 'Lifestyle Harian',
                     'nav.podcast': 'Podcast / Studio',
+                    'nav.religi': 'Religi / Ibadah',
                     'nav.ootd': 'OOTD / Fashion',
                     'nav.sport': 'Olahraga',
                     'nav.logout': 'Keluar',
@@ -115,6 +116,7 @@
                     'nav.section-foto': 'Photo Sessions',
                     'nav.lifestyle': 'Daily Lifestyle',
                     'nav.podcast': 'Podcast / Studio',
+                    'nav.religi': 'Faith / Worship',
                     'nav.ootd': 'OOTD / Fashion',
                     'nav.sport': 'Sports',
                     'nav.logout': 'Sign Out',
@@ -213,6 +215,7 @@
                     'nav.section-foto': 'Sesi Foto',
                     'nav.lifestyle': 'Gaya Hidup Harian',
                     'nav.podcast': 'Podcast / Studio',
+                    'nav.religi': 'Agama / Ibadah',
                     'nav.ootd': 'OOTD / Fesyen',
                     'nav.sport': 'Sukan',
                     'nav.logout': 'Log Keluar',
@@ -341,6 +344,9 @@
                     'Bicara ke Kamera': 'Talking to Camera', 'Senyum ke Kamera': 'Smiling at Camera', 'Gestur Tangan': 'Hand Gestures',
                     'Ketawa Natural': 'Natural Laugh', 'Pakai Headphone': 'Wearing Headphones', 'Wawancara Tamu': 'Interviewing a Guest', 'Angle Samping': 'Side Angle',
                     'Gelap Elegan': 'Dark Elegant', 'Hangat Cozy': 'Warm Cozy', 'Minimalis Terang': 'Bright Minimalist', 'Broadcast Neon': 'Neon Broadcast',
+                    'Baca Quran di Kamar': 'Reading Quran on Bed', 'Baca Quran Dekat Jendela': 'Quran by the Window',
+                    'Berdoa Setelah Sholat': 'Dua After Prayer', 'Dzikir dengan Tasbih': 'Dhikr with Prayer Beads',
+                    'Duduk di Sajadah': 'On the Prayer Mat', 'Peluk Quran': 'Holding the Quran',
                     'Mirror Selfie Outfit': 'Outfit Mirror Selfie', 'Detail Outfit': 'Outfit Details', 'Selfie di Lift': 'Elevator Selfie', 'Outfit di Kafe Estetik': 'Cafe Outfit Shot',
                     'Latihan di Gym': 'Gym Workout', 'Lari Pagi': 'Morning Run', 'Yoga di Rumah': 'Yoga at Home', 'Naik Gunung': 'Hiking',
                     'Stretching di Taman': 'Stretching at the Park', 'Selfie Habis Workout': 'Post-Workout Selfie'
@@ -359,6 +365,9 @@
                     'Bicara ke Kamera': 'Bercakap ke Kamera', 'Gestur Tangan': 'Gerak Tangan', 'Ketawa Natural': 'Ketawa Semula Jadi',
                     'Pakai Headphone': 'Pakai Fon Kepala', 'Wawancara Tamu': 'Menemu Bual Tetamu', 'Angle Samping': 'Sudut Sisi',
                     'Minimalis Terang': 'Minimalis Cerah',
+                    'Baca Quran di Kamar': 'Baca Quran di Bilik', 'Baca Quran Dekat Jendela': 'Baca Quran Tepi Tingkap',
+                    'Berdoa Setelah Sholat': 'Berdoa Selepas Solat', 'Dzikir dengan Tasbih': 'Zikir dengan Tasbih',
+                    'Duduk di Sajadah': 'Duduk di Sejadah',
                     'Detail Outfit': 'Detail Pakaian', 'Selfie di Lift': 'Selfie di Lif',
                     'Latihan di Gym': 'Bersenam di Gym', 'Naik Gunung': 'Mendaki', 'Stretching di Taman': 'Regangan di Taman', 'Selfie Habis Workout': 'Selfie Selepas Bersenam'
                 }
@@ -1282,7 +1291,7 @@
                 'broadcast-neon': 'Broadcast Neon'
             };
 
-            function clothingText(outfit, productCount, f, fallbackStyle) {
+            function clothingText(outfit, productCount, styleStr) {
                 if (productCount > 0) {
                     return `The FIRST TWO reference images show the person. The remaining ${productCount} reference image(s) are PRODUCT references ` +
                         `(clothing, shoes, bags, accessories). The person MUST wear or use these exact products - keep each product's design, ` +
@@ -1292,7 +1301,7 @@
                 if (outfit) {
                     return `Wearing: ${outfit} (outfit may differ from the reference photos - only face and identity must stay the same).`;
                 }
-                return `Clothing style consistent with: ${f.style || fallbackStyle}.`;
+                return `Clothing style consistent with: ${styleStr}.`;
             }
 
             function buildStudioPrompt(scene, ratio, char, outfit, productCount, setKey, program) {
@@ -1305,7 +1314,7 @@
                     `Professional aesthetic podcast content photo, looking like a frame from a high-end podcast video: ` +
                     `the person ${scene}, in ${STUDIO_SETS[setKey] || STUDIO_SETS['dark-luxury']}. ` +
                     sign +
-                    clothingText(outfit, productCount, f, 'elegant modest clothing') + ' ' +
+                    clothingText(outfit, productCount, f.style || 'elegant modest clothing') + ' ' +
                     `Shot on a professional cinema camera, shallow depth of field, soft warm key light on the face, ` +
                     `cinematic color grade, consistent premium set design and framing across the whole feed. ` +
                     `${RATIO_TEXT[ratio] || RATIO_TEXT['9:16']}, ${program ? 'no watermark' : 'no text, no watermark'}.`;
@@ -1318,15 +1327,19 @@
                     'natural selfie framing with mild wide-angle front-camera distortion',
                 candid: 'Candid photo taken by another person from a few steps away, natural unposed moment'
             };
-            function buildPhotoPrompt(scene, ratio, char, outfit, productCount, cam) {
+            function buildPhotoPrompt(scene, ratio, char, outfit, productCount, cam, opts) {
+                const o = opts || {};
                 const f = (char && char.cfg) || {};
-                const clothing = clothingText(outfit, productCount, f, 'modern casual clothing');
+                // defaultOutfit tab (mis. mukena) menang atas gaya pakaian dasar karakter
+                const styleStr = o.defaultOutfit || f.style || 'modern casual clothing';
+                const clothing = clothingText(outfit, productCount, styleStr);
+                const quality = o.qualityText ||
+                    'Realistic lighting, amateur smartphone photo look, slight natural imperfection, no studio pose';
                 return `Keep the person EXACTLY as in the first two reference photos - same face, same hair, same skin tone, ` +
                     `do NOT alter the person's identity. Only change the scene: ${scene}. ` +
                     clothing + ` ` +
                     `${CAM_TEXT[cam] || CAM_TEXT.selfie}. ` +
-                    `Realistic lighting, amateur smartphone photo look, slight natural imperfection, ` +
-                    `no studio pose, ${RATIO_TEXT[ratio] || RATIO_TEXT['9:16']}, no text, no watermark.`;
+                    `${quality}, ${RATIO_TEXT[ratio] || RATIO_TEXT['9:16']}, no text, no watermark.`;
             }
 
             // Pustaka outfit tersimpan (per perangkat, max 10) — dipakai bersama semua tab foto
@@ -1419,8 +1432,8 @@
                             <div class="card">
                                 <div class="flex items-center gap-3 mb-4"><span class="step-num">2</span><h3 class="font-semibold text-gray-800" data-i18n="pt.step-cam"></h3></div>
                                 <div class="grid grid-cols-2 gap-2" data-cam-group>
-                                    <button type="button" class="option-btn selected" data-cam="selfie">Selfie Sendiri</button>
-                                    <button type="button" class="option-btn" data-cam="candid">Difotoin Orang</button>
+                                    <button type="button" class="option-btn${(cfg.defaultCam || 'selfie') === 'selfie' ? ' selected' : ''}" data-cam="selfie">Selfie Sendiri</button>
+                                    <button type="button" class="option-btn${cfg.defaultCam === 'candid' ? ' selected' : ''}" data-cam="candid">Difotoin Orang</button>
                                 </div>
                             </div>`}
                             <div class="card">
@@ -1476,7 +1489,7 @@
 
                 let selectedCount = 4;
                 let selectedRatio = '9:16';
-                let selectedCam = 'selfie';
+                let selectedCam = cfg.defaultCam || 'selfie';
                 let selectedSet = 'dark-luxury';
                 let results = [];
                 let busy = false;
@@ -1715,7 +1728,7 @@
                     async function genOne(index) {
                         const promptText = cfg.studio
                             ? buildStudioPrompt(picks[index - 1], selectedRatio, char, outfit, prodB64s.length, selectedSet, programVal)
-                            : buildPhotoPrompt(picks[index - 1], selectedRatio, char, outfit, prodB64s.length, selectedCam);
+                            : buildPhotoPrompt(picks[index - 1], selectedRatio, char, outfit, prodB64s.length, selectedCam, cfg.promptOpts);
                         const b64 = await genImageWithRefs(promptText, [refFront, refBody, ...prodB64s]);
                         results[index - 1] = { b64, scene: picks[index - 1], outfit, oimgIds, cam: selectedCam, set: selectedSet, program: programVal, filename: `${p}-${index}.png` };
                         const card = document.getElementById(`${p}-card-${index}`);
@@ -1774,7 +1787,7 @@
                             const prodRegen = await selectedProductB64s(r.oimgIds || []);
                             const rPrompt = cfg.studio
                                 ? buildStudioPrompt(r.scene, selectedRatio, char2, r.outfit || '', prodRegen.length, r.set || selectedSet, r.program || '')
-                                : buildPhotoPrompt(r.scene, selectedRatio, char2, r.outfit || '', prodRegen.length, r.cam || selectedCam);
+                                : buildPhotoPrompt(r.scene, selectedRatio, char2, r.outfit || '', prodRegen.length, r.cam || selectedCam, cfg.promptOpts);
                             const b64 = await genImageWithRefs(rPrompt, [rf, rb, ...prodRegen]);
                             results[idx] = { b64, scene: r.scene, outfit: r.outfit, oimgIds: r.oimgIds, cam: r.cam, set: r.set, program: r.program, filename: r.filename };
                             card.innerHTML = cardInner(idx + 1, b64);
@@ -1826,6 +1839,22 @@
                     { val: 'wearing studio headphones, listening thoughtfully, facing the camera', label: 'Pakai Headphone' },
                     { val: 'interviewing a guest across the table, seen from a flattering three-quarter angle', label: 'Wawancara Tamu' },
                     { val: 'speaking into the microphone seen from a cinematic three-quarter side angle', label: 'Angle Samping' }
+                ]
+            });
+            createPhotoTab({
+                tab: 'religi',
+                defaultCam: 'candid',
+                promptOpts: {
+                    defaultOutfit: 'an elegant mukena (Indonesian prayer garment) with delicate floral embroidery and lace details in a soft pastel color, worn modestly and neatly',
+                    qualityText: 'Soft aesthetic cinematic look: gentle window daylight, warm pastel tones, dreamy softly blurred background, serene peaceful mood, like a frame from a premium Islamic lifestyle video'
+                },
+                scenes: [
+                    { val: 'sitting on a bed with soft floral bedding, reading the Quran attentively', label: 'Baca Quran di Kamar' },
+                    { val: 'reading the Quran near a window with soft morning light', label: 'Baca Quran Dekat Jendela' },
+                    { val: 'raising both hands in heartfelt dua after prayer, eyes gently closed', label: 'Berdoa Setelah Sholat' },
+                    { val: 'holding prayer beads, doing dzikir with a peaceful expression', label: 'Dzikir dengan Tasbih' },
+                    { val: 'sitting calmly on a prayer mat after prayer with a serene smile', label: 'Duduk di Sajadah' },
+                    { val: 'holding the Quran close to the chest with a warm gentle smile', label: 'Peluk Quran' }
                 ]
             });
             createPhotoTab({
@@ -1993,8 +2022,13 @@
             window.escHtml = function (s) {
                 return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
             };
-            window.APP_VERSION = '2.0';
+            window.APP_VERSION = '2.1';
             window.CHANGELOG = [
+                { version: '2.1', date: '18 Sep 2026', changes: [
+                    { id: 'Tab baru Religi / Ibadah: konten mukena estetik (baca Quran, doa, dzikir) dengan nuansa kamar pastel lembut - outfit mukena bisa diganti atau pakai foto produk',
+                      en: 'New Faith / Worship tab: aesthetic mukena content (Quran reading, dua, dhikr) with soft pastel room mood - the mukena outfit can be changed or use product photos',
+                      ms: 'Tab baharu Agama / Ibadah: kandungan mukena estetik (baca Quran, doa, zikir) dengan suasana bilik pastel lembut - outfit mukena boleh ditukar atau guna foto produk' },
+                ] },
                 { version: '2.0', date: '18 Sep 2026', changes: [
                     { id: 'Tab Podcast jadi Studio Estetik: 4 pilihan set studio terkunci (konsisten antar post), nama program di backdrop, komposisi menghadap kamera, lighting & kamera sinematik profesional',
                       en: 'Podcast tab is now an Aesthetic Studio: 4 locked studio sets (consistent across posts), show name on the backdrop, camera-facing composition, professional cinematic lighting & camera',
