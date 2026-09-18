@@ -99,6 +99,7 @@
                     'vp.dur-10': '10 detik (1 klip)',
                     'vp.dur-20': '20 detik (2 klip)',
                     'vp.dur-30': '30 detik (3 klip)',
+                    'vp.dur-60': '60 detik (6 klip)',
                     'vp.tpl-label': 'Template topik',
                     'vp.tpl-none': 'Belum ada template - klik + untuk buat',
                     'vp.tpl-name': 'Nama template',
@@ -229,6 +230,7 @@
                     'vp.dur-10': '10 seconds (1 clip)',
                     'vp.dur-20': '20 seconds (2 clips)',
                     'vp.dur-30': '30 seconds (3 clips)',
+                    'vp.dur-60': '60 seconds (6 clips)',
                     'vp.tpl-label': 'Topic template',
                     'vp.tpl-none': 'No templates yet - click + to create one',
                     'vp.tpl-name': 'Template name',
@@ -359,6 +361,7 @@
                     'vp.dur-10': '10 saat (1 klip)',
                     'vp.dur-20': '20 saat (2 klip)',
                     'vp.dur-30': '30 saat (3 klip)',
+                    'vp.dur-60': '60 saat (6 klip)',
                     'vp.tpl-label': 'Templat topik',
                     'vp.tpl-none': 'Belum ada templat - klik + untuk cipta',
                     'vp.tpl-name': 'Nama templat',
@@ -2106,7 +2109,9 @@
                         `Write the spoken script in ${langName} as ${parts === 1 ? 'ONE part' : parts + ' connected parts - one continuous story split across the parts'}. ` +
                         styleLines.join(' ') + ' ' +
                         `Each part must fit one 10-second clip: 25-28 words, simple everyday conversational words that are easy to say aloud - NOT formal or poetic written language. Add "..." between phrases to mark natural pauses. ` +
+                        `${parts > 1 ? 'The parts form ONE continuous flowing story: every part except the last must end mid-flow with "..." so the next clip continues the sentence naturally, never restart or re-introduce the topic, and only the final part delivers the closing message. ' : ''}` +
                         `For EACH part also write an image-to-video prompt in English where the person speaks to the camera like a relaxed conversation with a close friend, and explicitly state: "the person speaks slowly and calmly, never rushed, with natural breathing pauses between sentences". ` +
+                        `Every prompt must also state: "static camera, no camera movement, no zoom, identical framing in every part" so all clips match perfectly when joined together in a video editor. ` +
                         `Keep identity, outfit and background exactly as the source image. ` +
                         `For part 2 and later, the prompt must start with: "Continuation of the previous clip - same person, same outfit, same background, same framing; the person continues speaking mid-story". ` +
                         `Format exactly:\nPART 1\nPROMPT:\n<prompt>\nSCRIPT:\n<script>\n${parts > 1 ? 'PART 2\n(repeat the same format for every part)\n' : ''}Output nothing else.`;
@@ -2185,6 +2190,7 @@
                                 <option value="10" data-i18n="vp.dur-10"></option>
                                 <option value="20" data-i18n="vp.dur-20"></option>
                                 <option value="30" data-i18n="vp.dur-30"></option>
+                                <option value="60" data-i18n="vp.dur-60"></option>
                             </select>
                         </div>
                         <button id="vp-generate" class="btn-primary w-full rounded-lg py-2.5 text-sm font-semibold mb-3"><i class="fas fa-wand-magic-sparkles mr-1"></i><span data-i18n="vp.generate"></span></button>
@@ -2381,8 +2387,13 @@
             window.escHtml = function (s) {
                 return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
             };
-            window.APP_VERSION = '2.4';
+            window.APP_VERSION = '2.5';
             window.CHANGELOG = [
+                { version: '2.5', date: '18 Sep 2026', changes: [
+                    { id: 'Durasi Prompt Video sampai 60 detik (6 klip): kamera dikunci statis + kalimat antar klip nyambung (gantung dengan "..." lalu diteruskan) - hasil gabungan di CapCut mulus tanpa lompatan',
+                      en: 'Video Prompt duration up to 60 seconds (6 clips): locked static camera + sentences flow across clips (trail off with "..." then continue) - stitched result in CapCut is smooth with no jumps',
+                      ms: 'Tempoh Prompt Video sehingga 60 saat (6 klip): kamera statik terkunci + ayat bersambung antara klip (tergantung dengan "..." lalu diteruskan) - hasil cantuman dalam CapCut lancar tanpa lompatan' },
+                ] },
                 { version: '2.4', date: '18 Sep 2026', changes: [
                     { id: 'Prompt Video baru: script storytelling emosional yang lebih hidup, pilihan durasi 10/20/30 detik (otomatis dipecah per klip 10 detik), plus mode Topik Custom - buat template topikmu sendiri, tersimpan di akun (cloud sync)',
                       en: 'New Video Prompt: livelier emotional storytelling scripts, 10/20/30-second duration options (auto-split into 10-second clips), plus Custom Topic mode - create your own topic templates, saved to your account (cloud sync)',
