@@ -93,6 +93,37 @@
                     'vp.mode-niche': 'Konten Niche',
                     'vp.mode-natural-desc': 'Gerakan halus saja: gerak bibir dikit, kedip, senyum tipis — tanpa bicara.',
                     'vp.mode-niche-desc': 'Influencer bicara sesuai niche + script kalimat yang diucapkan.',
+                    'vp.mode-custom': 'Topik Custom',
+                    'vp.mode-custom-desc': 'Script dari template topik buatanmu sendiri - tersimpan di akun & bisa dipakai ulang.',
+                    'vp.dur-label': 'Durasi',
+                    'vp.dur-10': '10 detik (1 klip)',
+                    'vp.dur-20': '20 detik (2 klip)',
+                    'vp.dur-30': '30 detik (3 klip)',
+                    'vp.tpl-label': 'Template topik',
+                    'vp.tpl-none': 'Belum ada template - klik + untuk buat',
+                    'vp.tpl-name': 'Nama template',
+                    'vp.tpl-name-ph': 'Cerita anak demam, Tips MPASI, ...',
+                    'vp.tpl-topic': 'Topik + arah cerita',
+                    'vp.tpl-topic-ph': 'Contoh: malam pertama anak demam tinggi - pesan: percaya insting orang tua',
+                    'vp.tpl-tone': 'Gaya penyampaian',
+                    'vp.tone-emotional': 'Emosional',
+                    'vp.tone-energetic': 'Semangat',
+                    'vp.tone-gentle': 'Lembut',
+                    'vp.tone-firm': 'Tegas',
+                    'vp.tone-funny': 'Lucu',
+                    'vp.tpl-structure': 'Kerangka script (opsional)',
+                    'vp.tpl-structure-ph': 'pertanyaan pembuka -> cerita -> pesan penutup',
+                    'vp.tpl-example': 'Contoh script referensi (opsional)',
+                    'vp.tpl-example-ph': 'Tempel contoh script yang gayanya kamu suka - AI akan meniru gayanya',
+                    'vp.tpl-save': 'Simpan Template',
+                    'vp.tpl-cancel': 'Batal',
+                    'vp.tpl-del-confirm': 'Hapus template ini? Ikut terhapus dari cloud.',
+                    'vp.part': 'Bagian',
+                    'vp.copy-all': 'Salin semua',
+                    'err.tpl-name': 'Isi nama template dulu ya.',
+                    'err.tpl-topic': 'Isi topik + arah cerita dulu ya.',
+                    'err.tpl-limit': 'Maksimal 30 template. Hapus salah satu dulu.',
+                    'err.tpl-none-sel': 'Pilih atau buat template dulu ya.',
                     'vp.niche-label': 'Niche',
                     'vp.lang-label': 'Bahasa script',
                     'vp.generate': 'Buat Prompt',
@@ -192,6 +223,37 @@
                     'vp.mode-niche': 'Niche Content',
                     'vp.mode-natural-desc': 'Subtle motion only: slight lip movement, blinking, soft smile — no talking.',
                     'vp.mode-niche-desc': 'The influencer speaks to match the niche + includes the spoken script.',
+                    'vp.mode-custom': 'Custom Topic',
+                    'vp.mode-custom-desc': 'Script from your own topic template - saved to your account & reusable.',
+                    'vp.dur-label': 'Duration',
+                    'vp.dur-10': '10 seconds (1 clip)',
+                    'vp.dur-20': '20 seconds (2 clips)',
+                    'vp.dur-30': '30 seconds (3 clips)',
+                    'vp.tpl-label': 'Topic template',
+                    'vp.tpl-none': 'No templates yet - click + to create one',
+                    'vp.tpl-name': 'Template name',
+                    'vp.tpl-name-ph': 'Sick child story, Feeding tips, ...',
+                    'vp.tpl-topic': 'Topic + story direction',
+                    'vp.tpl-topic-ph': 'Example: the first night my child had a high fever - message: trust your instincts as a parent',
+                    'vp.tpl-tone': 'Delivery style',
+                    'vp.tone-emotional': 'Emotional',
+                    'vp.tone-energetic': 'Energetic',
+                    'vp.tone-gentle': 'Gentle',
+                    'vp.tone-firm': 'Firm',
+                    'vp.tone-funny': 'Funny',
+                    'vp.tpl-structure': 'Script structure (optional)',
+                    'vp.tpl-structure-ph': 'opening question -> story -> closing message',
+                    'vp.tpl-example': 'Reference script example (optional)',
+                    'vp.tpl-example-ph': 'Paste a script whose style you like - the AI will imitate it',
+                    'vp.tpl-save': 'Save Template',
+                    'vp.tpl-cancel': 'Cancel',
+                    'vp.tpl-del-confirm': 'Delete this template? It will also be removed from the cloud.',
+                    'vp.part': 'Part',
+                    'vp.copy-all': 'Copy all',
+                    'err.tpl-name': 'Please fill in the template name first.',
+                    'err.tpl-topic': 'Please fill in the topic + story direction first.',
+                    'err.tpl-limit': 'Maximum 30 templates. Delete one first.',
+                    'err.tpl-none-sel': 'Please pick or create a template first.',
                     'vp.niche-label': 'Niche',
                     'vp.lang-label': 'Script language',
                     'vp.generate': 'Create Prompt',
@@ -291,6 +353,37 @@
                     'vp.mode-niche': 'Kandungan Niche',
                     'vp.mode-natural-desc': 'Gerakan halus sahaja: bibir bergerak sedikit, kelipan, senyuman nipis — tanpa bercakap.',
                     'vp.mode-niche-desc': 'Influencer bercakap mengikut niche + skrip ayat yang diucapkan.',
+                    'vp.mode-custom': 'Topik Custom',
+                    'vp.mode-custom-desc': 'Skrip daripada templat topik anda sendiri - disimpan dalam akaun & boleh diguna semula.',
+                    'vp.dur-label': 'Tempoh',
+                    'vp.dur-10': '10 saat (1 klip)',
+                    'vp.dur-20': '20 saat (2 klip)',
+                    'vp.dur-30': '30 saat (3 klip)',
+                    'vp.tpl-label': 'Templat topik',
+                    'vp.tpl-none': 'Belum ada templat - klik + untuk cipta',
+                    'vp.tpl-name': 'Nama templat',
+                    'vp.tpl-name-ph': 'Cerita anak demam, Tip penyusuan, ...',
+                    'vp.tpl-topic': 'Topik + arah cerita',
+                    'vp.tpl-topic-ph': 'Contoh: malam pertama anak demam panas - mesej: percaya naluri ibu bapa',
+                    'vp.tpl-tone': 'Gaya penyampaian',
+                    'vp.tone-emotional': 'Emosi',
+                    'vp.tone-energetic': 'Bersemangat',
+                    'vp.tone-gentle': 'Lembut',
+                    'vp.tone-firm': 'Tegas',
+                    'vp.tone-funny': 'Lucu',
+                    'vp.tpl-structure': 'Kerangka skrip (pilihan)',
+                    'vp.tpl-structure-ph': 'soalan pembuka -> cerita -> mesej penutup',
+                    'vp.tpl-example': 'Contoh skrip rujukan (pilihan)',
+                    'vp.tpl-example-ph': 'Tampal contoh skrip yang anda suka gayanya - AI akan meniru gayanya',
+                    'vp.tpl-save': 'Simpan Templat',
+                    'vp.tpl-cancel': 'Batal',
+                    'vp.tpl-del-confirm': 'Padam templat ini? Ia turut dipadam daripada cloud.',
+                    'vp.part': 'Bahagian',
+                    'vp.copy-all': 'Salin semua',
+                    'err.tpl-name': 'Sila isi nama templat dahulu.',
+                    'err.tpl-topic': 'Sila isi topik + arah cerita dahulu.',
+                    'err.tpl-limit': 'Maksimum 30 templat. Padam satu dahulu.',
+                    'err.tpl-none-sel': 'Sila pilih atau cipta templat dahulu.',
                     'vp.niche-label': 'Niche',
                     'vp.lang-label': 'Bahasa skrip',
                     'vp.generate': 'Cipta Prompt',
@@ -909,6 +1002,88 @@
                     document.dispatchEvent(new CustomEvent('sia-oimg-changed'));
                 };
 
+                // ---- Template script video (teks murni — localStorage + cloud sync pola charCloud) ----
+                window.tplStore = {
+                    KEY: 'sia_vp_templates',
+                    list() { try { return JSON.parse(localStorage.getItem(this.KEY)) || []; } catch (e) { return []; } },
+                    _write(arr) { localStorage.setItem(this.KEY, JSON.stringify(arr)); },
+                    get(id) { return this.list().find(t => t.id === id) || null; },
+                    put(rec) {
+                        const arr = this.list().filter(t => t.id !== rec.id);
+                        arr.push(rec);
+                        this._write(arr);
+                    },
+                    remove(id) { this._write(this.list().filter(t => t.id !== id)); }
+                };
+
+                window.tplCloud = {
+                    _q(action, extra) {
+                        const email = localStorage.getItem('sia_email') || '';
+                        return `${LOGIN_CFG.SCRIPT_URL}?action=${action}&email=${encodeURIComponent(email)}&token=${encodeURIComponent(deviceToken)}&app_secret=${encodeURIComponent(LOGIN_CFG.APP_SECRET)}${extra || ''}`;
+                    },
+                    async list() {
+                        const d = await fetch(this._q('tpl_list')).then(r => r.json());
+                        return d.status === 'SUKSES' ? (d.tpls || []) : null;
+                    },
+                    async del(id) {
+                        try {
+                            const d = await fetch(this._q('tpl_del', `&id=${encodeURIComponent(id)}`)).then(r => r.json());
+                            return d.status === 'SUKSES';
+                        } catch (e) { return false; }
+                    },
+                    async save(rec) {
+                        // POST tanpa header custom → default text/plain, hindari preflight CORS (pola charCloud.upload)
+                        const body = JSON.stringify({
+                            sia_action: 'tpl_save',
+                            app_secret: LOGIN_CFG.APP_SECRET,
+                            email: localStorage.getItem('sia_email') || '',
+                            token: deviceToken,
+                            id: rec.id, name: rec.name, topic: rec.topic,
+                            tone: rec.tone, structure: rec.structure, example: rec.example
+                        });
+                        const d = await fetch(LOGIN_CFG.SCRIPT_URL, { method: 'POST', body }).then(r => r.json());
+                        return d;
+                    }
+                };
+
+                // Aturan emas sama dengan syncChars: JANGAN hapus lokal item cloud:false (pending upload).
+                window.__syncingTpls = false;
+                window.syncTpls = async function () {
+                    if (!localStorage.getItem('sia_email')) return;
+                    if (window.__syncingTpls) return;
+                    window.__syncingTpls = true;
+                    try {
+                        const server = await window.tplCloud.list();
+                        if (server) {
+                            const serverIds = new Set(server.map(t => String(t.id)));
+                            let local = window.tplStore.list();
+                            // SELF-HEALING: server kosong tapi lokal punya data cloud → re-upload, jangan hapus
+                            if (server.length === 0 && local.some(t => t.cloud === true)) {
+                                local.forEach(t => { if (t.cloud === true) window.tplStore.put(Object.assign({}, t, { cloud: false })); });
+                                local = window.tplStore.list();
+                            }
+                            const localIds = new Set(local.map(t => String(t.id)));
+                            for (const t of local) {
+                                if (t.cloud === true && !serverIds.has(String(t.id))) { window.tplStore.remove(t.id); continue; }
+                                if (t.cloud === false) {
+                                    try {
+                                        const d = await window.tplCloud.save(t);
+                                        if (d && d.status === 'SUKSES') window.tplStore.put(Object.assign({}, t, { cloud: true }));
+                                    } catch (e) {}
+                                }
+                            }
+                            server.filter(s => !localIds.has(String(s.id))).forEach(s => {
+                                window.tplStore.put({
+                                    id: String(s.id), name: String(s.name || ''), topic: String(s.topic || ''),
+                                    tone: String(s.tone || ''), structure: String(s.structure || ''),
+                                    example: String(s.example || ''), updatedAt: s.updatedAt, cloud: true
+                                });
+                            });
+                        }
+                    } catch (e) { console.error('syncTpls:', e); }
+                    finally { window.__syncingTpls = false; }
+                };
+
                 function showError(msg) {
                     errEl.textContent = msg;
                     errEl.classList.remove('hidden');
@@ -928,6 +1103,7 @@
                     if (!sesInterval) sesInterval = setInterval(jagaSesi, 10000);
                     if (window.syncChars) window.syncChars();
                     if (window.syncOutfitImgs) setTimeout(() => window.syncOutfitImgs(), 0);
+                    if (window.syncTpls) window.syncTpls();
                 }
                 async function jagaSesi() {
                     const email = localStorage.getItem('sia_email');
@@ -985,6 +1161,7 @@
                     setLoading(true);
                     if (window.syncChars) window.syncChars();   // preload karakter SAMBIL cek sesi — tanpa await
                     if (window.syncOutfitImgs) setTimeout(() => window.syncOutfitImgs(), 0);   // preload foto outfit juga
+                    if (window.syncTpls) window.syncTpls();   // preload template script video
                     api('cek', savedEmail)
                         .then(d => {
                             setLoading(false);
@@ -1891,7 +2068,15 @@
                 const NICHE_OPTIONS = ['parenting', 'islamic content', 'wisdom quotes', 'motivation', 'food and culinary', 'fashion', 'education', 'travel'];
                 const LANG_NAMES = { id: 'Indonesian', en: 'English', ms: 'Malay' };
 
-                function buildVideoPromptRequest(mode, scene, nicheVal, scriptLang) {
+                const TONE_STYLES = {
+                    emotional: 'emotional and heartfelt, from the heart',
+                    energetic: 'energetic and enthusiastic, upbeat',
+                    gentle: 'gentle, soft and soothing',
+                    firm: 'firm, confident and assertive',
+                    funny: 'light, playful and funny'
+                };
+
+                function buildVideoPromptRequest(mode, scene, opts) {
                     if (mode === 'natural') {
                         return `You are a prompt writer for image-to-video AI tools (Veo, Kling). ` +
                             `Based on this photo description: "${scene}". Write ONE image-to-video prompt in English ` +
@@ -1900,21 +2085,36 @@
                             `The person must NOT speak. Keep identity, outfit and background exactly as the source image. ` +
                             `Output only the prompt text, no explanation.`;
                     }
-                    const langName = LANG_NAMES[scriptLang] || 'Indonesian';
-                    return `You are a prompt writer for image-to-video AI tools (Veo, Kling). ` +
-                        `Based on this photo description: "${scene}". The person is a social media influencer ` +
-                        `with the niche "${nicheVal}". Write an image-to-video prompt in English where the person ` +
-                        `speaks to the camera like a relaxed everyday conversation with a close friend: ` +
-                        `slow, calm, unhurried pace; natural pauses between phrases; soft warm tone; ` +
-                        `occasionally looks away briefly and smiles like in real conversation; subtle relaxed gestures. ` +
-                        `Explicitly state in the prompt: "the person speaks slowly and calmly, never rushed, ` +
-                        `with natural breathing pauses between sentences". ` +
+                    const langName = LANG_NAMES[opts.lang] || 'Indonesian';
+                    const parts = Math.max(1, Math.round((Number(opts.dur) || 10) / 10));
+                    let subject;
+                    const styleLines = [];
+                    if (mode === 'custom' && opts.tpl) {
+                        subject = `The person speaks about this topic: "${opts.tpl.topic}".`;
+                        if (TONE_STYLES[opts.tpl.tone]) styleLines.push(`Delivery style: ${TONE_STYLES[opts.tpl.tone]}.`);
+                        if (opts.tpl.structure) styleLines.push(`Follow this script structure: "${opts.tpl.structure}".`);
+                        if (opts.tpl.example) styleLines.push(`Imitate the style, rhythm and voice of this example script but write different content: "${opts.tpl.example}".`);
+                    } else {
+                        subject = `The person is a social media influencer with the niche "${opts.niche}". ` +
+                            `First, silently pick ONE specific concrete moment or everyday situation related to this niche - a real relatable scene, NOT a generic theme or greeting.`;
+                    }
+                    if (!(mode === 'custom' && opts.tpl && opts.tpl.structure)) {
+                        styleLines.push('Structure the script as emotional storytelling: (1) an opening hook line that makes viewers stop scrolling, (2) the story of that specific moment with vivid relatable detail, (3) a closing message that sticks in the heart.');
+                    }
+                    return `You are a prompt writer for image-to-video AI tools (Veo, Kling, Google Omni). ` +
+                        `Based on this photo description: "${scene}". ${subject} ` +
+                        `Write the spoken script in ${langName} as ${parts === 1 ? 'ONE part' : parts + ' connected parts - one continuous story split across the parts'}. ` +
+                        styleLines.join(' ') + ' ' +
+                        `Each part must fit one 10-second clip: 25-28 words, simple everyday conversational words that are easy to say aloud - NOT formal or poetic written language. Add "..." between phrases to mark natural pauses. ` +
+                        `For EACH part also write an image-to-video prompt in English where the person speaks to the camera like a relaxed conversation with a close friend, and explicitly state: "the person speaks slowly and calmly, never rushed, with natural breathing pauses between sentences". ` +
                         `Keep identity, outfit and background exactly as the source image. ` +
-                        `Then write the exact short spoken script in ${langName}, matching the "${nicheVal}" niche: ` +
-                        `maximum 2 short sentences (about 15-20 words total) so the delivery fits comfortably without rushing. ` +
-                        `Use simple everyday conversational words that are easy to say aloud - NOT formal or poetic written language. ` +
-                        `Add "..." between phrases to mark natural pauses. ` +
-                        `Format:\nPROMPT:\n<prompt>\nSCRIPT:\n<script>\nOutput nothing else.`;
+                        `For part 2 and later, the prompt must start with: "Continuation of the previous clip - same person, same outfit, same background, same framing; the person continues speaking mid-story". ` +
+                        `Format exactly:\nPART 1\nPROMPT:\n<prompt>\nSCRIPT:\n<script>\n${parts > 1 ? 'PART 2\n(repeat the same format for every part)\n' : ''}Output nothing else.`;
+                }
+
+                function splitVideoParts(txt) {
+                    const parts = String(txt).split(/(?=^PART\s+\d+\s*$)/m).map(s => s.trim()).filter(Boolean);
+                    return parts.length ? parts : [String(txt).trim()];
                 }
 
                 async function genText(promptText) {
@@ -1936,74 +2136,79 @@
                     const optHtml = nicheOpts.map(n => `<option value="${window.escHtml(n)}">${window.escHtml(n)}</option>`).join('');
                     const langOpt = ['id', 'en', 'ms'].map(l => `<option value="${l}"${l === uiLang ? ' selected' : ''}>${l.toUpperCase()}</option>`).join('');
                     const body = `
-                        <div class="grid grid-cols-2 gap-2 mb-2">
+                        <div class="grid grid-cols-3 gap-2 mb-2">
                             <button type="button" class="option-btn selected" data-vmode="natural"><span data-i18n="vp.mode-natural"></span></button>
                             <button type="button" class="option-btn" data-vmode="niche"><span data-i18n="vp.mode-niche"></span></button>
+                            <button type="button" class="option-btn" data-vmode="custom"><span data-i18n="vp.mode-custom"></span></button>
                         </div>
                         <p id="vp-mode-desc" class="text-xs text-gray-400 mb-3" data-i18n="vp.mode-natural-desc"></p>
                         <div id="vp-niche-wrap" class="hidden mb-3">
                             <label class="text-xs font-medium text-gray-500 block mb-1" data-i18n="vp.niche-label"></label>
-                            <select id="vp-niche-select" class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm mb-2">${optHtml}</select>
+                            <select id="vp-niche-select" class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm">${optHtml}</select>
+                        </div>
+                        <div id="vp-tpl-wrap" class="hidden mb-3">
+                            <label class="text-xs font-medium text-gray-500 block mb-1" data-i18n="vp.tpl-label"></label>
+                            <div class="flex gap-2">
+                                <select id="vp-tpl-select" class="flex-1 min-w-0 border border-gray-300 rounded-lg px-3 py-2.5 text-sm"></select>
+                                <button type="button" id="vp-tpl-new" class="btn-secondary px-3 rounded-lg"><i class="fas fa-plus"></i></button>
+                                <button type="button" id="vp-tpl-edit" class="btn-secondary px-3 rounded-lg"><i class="fas fa-pen"></i></button>
+                                <button type="button" id="vp-tpl-del" class="btn-secondary px-3 rounded-lg"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div id="vp-tpl-form" class="hidden border border-violet-200 bg-violet-50/50 rounded-lg p-3 mb-3">
+                            <label class="text-xs font-medium text-gray-500 block mb-1" data-i18n="vp.tpl-name"></label>
+                            <input id="vp-tf-name" type="text" maxlength="60" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm mb-2" data-i18n-placeholder="vp.tpl-name-ph">
+                            <label class="text-xs font-medium text-gray-500 block mb-1" data-i18n="vp.tpl-topic"></label>
+                            <textarea id="vp-tf-topic" maxlength="500" rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm mb-2" data-i18n-placeholder="vp.tpl-topic-ph"></textarea>
+                            <label class="text-xs font-medium text-gray-500 block mb-1" data-i18n="vp.tpl-tone"></label>
+                            <div id="vp-tf-tone" class="grid grid-cols-3 gap-2 mb-2">
+                                <button type="button" class="option-btn selected" data-tone="emotional"><span data-i18n="vp.tone-emotional"></span></button>
+                                <button type="button" class="option-btn" data-tone="energetic"><span data-i18n="vp.tone-energetic"></span></button>
+                                <button type="button" class="option-btn" data-tone="gentle"><span data-i18n="vp.tone-gentle"></span></button>
+                                <button type="button" class="option-btn" data-tone="firm"><span data-i18n="vp.tone-firm"></span></button>
+                                <button type="button" class="option-btn" data-tone="funny"><span data-i18n="vp.tone-funny"></span></button>
+                            </div>
+                            <label class="text-xs font-medium text-gray-500 block mb-1" data-i18n="vp.tpl-structure"></label>
+                            <textarea id="vp-tf-structure" maxlength="300" rows="2" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm mb-2" data-i18n-placeholder="vp.tpl-structure-ph"></textarea>
+                            <label class="text-xs font-medium text-gray-500 block mb-1" data-i18n="vp.tpl-example"></label>
+                            <textarea id="vp-tf-example" maxlength="1000" rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm mb-2" data-i18n-placeholder="vp.tpl-example-ph"></textarea>
+                            <div class="flex gap-2">
+                                <button type="button" id="vp-tf-save" class="btn-primary flex-1 rounded-lg py-2 text-sm font-semibold"><span data-i18n="vp.tpl-save"></span></button>
+                                <button type="button" id="vp-tf-cancel" class="btn-secondary flex-1 rounded-lg py-2 text-sm font-semibold"><span data-i18n="vp.tpl-cancel"></span></button>
+                            </div>
+                        </div>
+                        <div id="vp-shared-wrap" class="hidden mb-3">
                             <label class="text-xs font-medium text-gray-500 block mb-1" data-i18n="vp.lang-label"></label>
-                            <select id="vp-lang-select" class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm">${langOpt}</select>
+                            <select id="vp-lang-select" class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm mb-2">${langOpt}</select>
+                            <label class="text-xs font-medium text-gray-500 block mb-1" data-i18n="vp.dur-label"></label>
+                            <select id="vp-dur-select" class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm">
+                                <option value="10" data-i18n="vp.dur-10"></option>
+                                <option value="20" data-i18n="vp.dur-20"></option>
+                                <option value="30" data-i18n="vp.dur-30"></option>
+                            </select>
                         </div>
                         <button id="vp-generate" class="btn-primary w-full rounded-lg py-2.5 text-sm font-semibold mb-3"><i class="fas fa-wand-magic-sparkles mr-1"></i><span data-i18n="vp.generate"></span></button>
                         <div id="vp-loading" class="hidden text-center py-4 text-violet-500"><i class="fas fa-circle-notch fa-spin text-xl"></i></div>
                         <div id="vp-result-wrap" class="hidden">
-                            <pre id="vp-result" class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-xs whitespace-pre-wrap max-h-64 overflow-y-auto"></pre>
-                            <button id="vp-copy" class="btn-secondary w-full rounded-lg py-2.5 text-sm font-semibold mt-2"><i class="fas fa-copy mr-1"></i><span data-i18n="btn.copy"></span></button>
+                            <div id="vp-parts"></div>
+                            <button id="vp-copy" class="btn-secondary w-full rounded-lg py-2.5 text-sm font-semibold mt-1"><i class="fas fa-copy mr-1"></i><span data-i18n="vp.copy-all"></span></button>
                             <p class="text-[11px] text-gray-400 mt-2" data-i18n="vp.hint"></p>
                         </div>`;
                     window.showUniversalModal(window.t('vp.title'), body);
 
                     let mode = 'natural';
+                    let editingTplId = null;
+                    let currentTone = 'emotional';
+                    let lastTxt = '';
                     const mb = document.getElementById('modal-body');
-                    const nicheSel = () => document.getElementById('vp-niche-select');
-                    const langSel = () => document.getElementById('vp-lang-select');
-                    const resultEl = () => document.getElementById('vp-result');
-                    const resultWrap = () => document.getElementById('vp-result-wrap');
+                    const gid = (x) => document.getElementById(x);
+                    const nicheSel = () => gid('vp-niche-select');
+                    const langSel = () => gid('vp-lang-select');
+                    const durSel = () => gid('vp-dur-select');
+                    const tplSel = () => gid('vp-tpl-select');
+                    const resultWrap = () => gid('vp-result-wrap');
 
-                    function cacheKey() {
-                        if (mode === 'natural') return 'vpCacheNatural';
-                        const n = String(nicheSel().value).replace(/[^a-z]/gi, '');
-                        return 'vpCacheNiche' + n + String(langSel().value).toUpperCase();
-                    }
-                    function showCached() {
-                        const cached = card && card.dataset ? card.dataset[cacheKey()] : null;
-                        if (cached) { resultEl().textContent = cached; resultWrap().classList.remove('hidden'); }
-                        else { resultWrap().classList.add('hidden'); }
-                    }
-
-                    mb.querySelectorAll('[data-vmode]').forEach(b => b.addEventListener('click', () => {
-                        mb.querySelectorAll('[data-vmode]').forEach(x => x.classList.remove('selected'));
-                        b.classList.add('selected');
-                        mode = b.dataset.vmode;
-                        document.getElementById('vp-niche-wrap').classList.toggle('hidden', mode !== 'niche');
-                        document.getElementById('vp-mode-desc').setAttribute('data-i18n', mode === 'niche' ? 'vp.mode-niche-desc' : 'vp.mode-natural-desc');
-                        if (window._i18nApplyNow) window._i18nApplyNow();
-                        showCached();
-                    }));
-                    nicheSel().addEventListener('change', showCached);
-                    langSel().addEventListener('change', showCached);
-
-                    document.getElementById('vp-generate').addEventListener('click', async () => {
-                        const loading = document.getElementById('vp-loading');
-                        loading.classList.remove('hidden');
-                        resultWrap().classList.add('hidden');
-                        try {
-                            const txt = await genText(buildVideoPromptRequest(mode, scene, nicheSel().value, langSel().value));
-                            if (card && card.dataset) card.dataset[cacheKey()] = txt;
-                            resultEl().textContent = txt;
-                            resultWrap().classList.remove('hidden');
-                        } catch (err) {
-                            if (window.logDebug) window.logDebug('vp', String(err));
-                            await window.uiNotify(window.t('err.vp-failed'));
-                        }
-                        loading.classList.add('hidden');
-                    });
-
-                    document.getElementById('vp-copy').addEventListener('click', async () => {
-                        const txt = resultEl().textContent;
+                    async function copyText(txt, btnEl) {
                         try {
                             await navigator.clipboard.writeText(txt);
                         } catch (e) {
@@ -2014,10 +2219,159 @@
                             try { document.execCommand('copy'); } catch (e2) {}
                             ta.remove();
                         }
-                        const span = document.querySelector('#vp-copy span');
-                        if (span) { span.textContent = window.t('vp.copied'); setTimeout(() => { span.textContent = window.t('btn.copy'); }, 1500); }
+                        const span = btnEl.querySelector('span') || btnEl;
+                        const old = span.textContent;
+                        span.textContent = window.t('vp.copied');
+                        setTimeout(() => { span.textContent = old; }, 1500);
+                    }
+
+                    function renderResult(txt) {
+                        lastTxt = txt;
+                        const cont = gid('vp-parts');
+                        cont.innerHTML = '';
+                        const parts = splitVideoParts(txt);
+                        parts.forEach((p, i) => {
+                            const block = document.createElement('div');
+                            block.className = 'mb-2';
+                            const pre = document.createElement('pre');
+                            pre.className = 'bg-gray-50 border border-gray-200 rounded-lg p-3 text-xs whitespace-pre-wrap max-h-56 overflow-y-auto';
+                            pre.textContent = p;
+                            const btn = document.createElement('button');
+                            btn.type = 'button';
+                            btn.className = 'btn-secondary w-full rounded-lg py-2 text-xs font-semibold mt-1';
+                            const sp = document.createElement('span');
+                            sp.textContent = parts.length > 1 ? `${window.t('btn.copy')} - ${window.t('vp.part')} ${i + 1}` : window.t('btn.copy');
+                            btn.appendChild(sp);
+                            btn.addEventListener('click', () => copyText(p, btn));
+                            block.appendChild(pre);
+                            block.appendChild(btn);
+                            cont.appendChild(block);
+                        });
+                        gid('vp-copy').classList.toggle('hidden', parts.length <= 1);
+                        resultWrap().classList.remove('hidden');
+                    }
+
+                    function cacheKey() {
+                        if (mode === 'natural') return 'vpCacheNatural';
+                        const dur = 'D' + durSel().value;
+                        const lang = String(langSel().value).toUpperCase();
+                        if (mode === 'custom') {
+                            const tid = String(tplSel().value || '').replace(/[^a-zA-Z0-9]/g, '');
+                            return 'vpCacheTpl' + tid + lang + dur;
+                        }
+                        const n = String(nicheSel().value).replace(/[^a-z]/gi, '');
+                        return 'vpCacheNiche' + n + lang + dur;
+                    }
+                    function showCached() {
+                        const cached = card && card.dataset ? card.dataset[cacheKey()] : null;
+                        if (cached) renderResult(cached);
+                        else resultWrap().classList.add('hidden');
+                    }
+
+                    function fillTplSelect(selectId) {
+                        const tpls = window.tplStore ? window.tplStore.list().sort((a, b) => String(a.name).localeCompare(String(b.name))) : [];
+                        tplSel().innerHTML = tpls.length
+                            ? tpls.map(t2 => `<option value="${window.escHtml(t2.id)}">${window.escHtml(t2.name)}</option>`).join('')
+                            : `<option value="">${window.escHtml(window.t('vp.tpl-none'))}</option>`;
+                        if (selectId) tplSel().value = selectId;
+                    }
+
+                    function setTone(tone) {
+                        currentTone = tone;
+                        mb.querySelectorAll('#vp-tf-tone [data-tone]').forEach(b => b.classList.toggle('selected', b.dataset.tone === tone));
+                    }
+                    function openTplForm(rec) {
+                        editingTplId = rec ? rec.id : null;
+                        gid('vp-tf-name').value = rec ? rec.name : '';
+                        gid('vp-tf-topic').value = rec ? rec.topic : '';
+                        gid('vp-tf-structure').value = rec ? rec.structure : '';
+                        gid('vp-tf-example').value = rec ? rec.example : '';
+                        setTone((rec && rec.tone) || 'emotional');
+                        gid('vp-tpl-form').classList.remove('hidden');
+                    }
+
+                    mb.querySelectorAll('[data-vmode]').forEach(b => b.addEventListener('click', () => {
+                        mb.querySelectorAll('[data-vmode]').forEach(x => x.classList.remove('selected'));
+                        b.classList.add('selected');
+                        mode = b.dataset.vmode;
+                        gid('vp-niche-wrap').classList.toggle('hidden', mode !== 'niche');
+                        gid('vp-tpl-wrap').classList.toggle('hidden', mode !== 'custom');
+                        gid('vp-shared-wrap').classList.toggle('hidden', mode === 'natural');
+                        if (mode !== 'custom') gid('vp-tpl-form').classList.add('hidden');
+                        const descKey = { natural: 'vp.mode-natural-desc', niche: 'vp.mode-niche-desc', custom: 'vp.mode-custom-desc' }[mode];
+                        gid('vp-mode-desc').setAttribute('data-i18n', descKey);
+                        if (window._i18nApplyNow) window._i18nApplyNow();
+                        showCached();
+                    }));
+                    nicheSel().addEventListener('change', showCached);
+                    langSel().addEventListener('change', showCached);
+                    durSel().addEventListener('change', showCached);
+                    tplSel().addEventListener('change', showCached);
+                    mb.querySelectorAll('#vp-tf-tone [data-tone]').forEach(b => b.addEventListener('click', () => setTone(b.dataset.tone)));
+
+                    gid('vp-tpl-new').addEventListener('click', () => openTplForm(null));
+                    gid('vp-tpl-edit').addEventListener('click', () => {
+                        const rec = window.tplStore && window.tplStore.get(tplSel().value);
+                        if (rec) openTplForm(rec);
+                    });
+                    gid('vp-tpl-del').addEventListener('click', async () => {
+                        const rec = window.tplStore && window.tplStore.get(tplSel().value);
+                        if (!rec) return;
+                        if (!(await window.uiConfirm(window.t('vp.tpl-del-confirm')))) return;
+                        window.tplStore.remove(rec.id);
+                        if (window.tplCloud) window.tplCloud.del(rec.id);
+                        fillTplSelect();
+                        showCached();
+                    });
+                    gid('vp-tf-cancel').addEventListener('click', () => gid('vp-tpl-form').classList.add('hidden'));
+                    gid('vp-tf-save').addEventListener('click', async () => {
+                        const name = gid('vp-tf-name').value.trim();
+                        const topic = gid('vp-tf-topic').value.trim();
+                        if (!name) { await window.uiNotify(window.t('err.tpl-name')); return; }
+                        if (!topic) { await window.uiNotify(window.t('err.tpl-topic')); return; }
+                        if (!editingTplId && window.tplStore.list().length >= 30) { await window.uiNotify(window.t('err.tpl-limit')); return; }
+                        const rec = {
+                            id: editingTplId || ('tpl' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6)),
+                            name: name.slice(0, 60),
+                            topic: topic.slice(0, 500),
+                            tone: currentTone,
+                            structure: gid('vp-tf-structure').value.trim().slice(0, 300),
+                            example: gid('vp-tf-example').value.trim().slice(0, 1000),
+                            updatedAt: Date.now(), cloud: false
+                        };
+                        window.tplStore.put(rec);
+                        gid('vp-tpl-form').classList.add('hidden');
+                        fillTplSelect(rec.id);
+                        if (window.syncTpls) window.syncTpls();
+                        showCached();
                     });
 
+                    document.getElementById('vp-generate').addEventListener('click', async () => {
+                        if (mode === 'custom') {
+                            const rec = window.tplStore && window.tplStore.get(tplSel().value);
+                            if (!rec) { await window.uiNotify(window.t('err.tpl-none-sel')); return; }
+                        }
+                        const loading = gid('vp-loading');
+                        loading.classList.remove('hidden');
+                        resultWrap().classList.add('hidden');
+                        try {
+                            const tpl = mode === 'custom' ? window.tplStore.get(tplSel().value) : null;
+                            const txt = await genText(buildVideoPromptRequest(mode, scene, {
+                                niche: nicheSel().value, lang: langSel().value, dur: durSel().value, tpl: tpl
+                            }));
+                            if (card && card.dataset) card.dataset[cacheKey()] = txt;
+                            renderResult(txt);
+                        } catch (err) {
+                            if (window.logDebug) window.logDebug('vp', String(err));
+                            await window.uiNotify(window.t('err.vp-failed'));
+                        }
+                        loading.classList.add('hidden');
+                    });
+
+                    document.getElementById('vp-copy').addEventListener('click', function () { copyText(lastTxt, this); });
+
+                    fillTplSelect();
+                    if (window.syncTpls) window.syncTpls();
                     showCached();
                 };
             })();
@@ -2027,8 +2381,13 @@
             window.escHtml = function (s) {
                 return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
             };
-            window.APP_VERSION = '2.3';
+            window.APP_VERSION = '2.4';
             window.CHANGELOG = [
+                { version: '2.4', date: '18 Sep 2026', changes: [
+                    { id: 'Prompt Video baru: script storytelling emosional yang lebih hidup, pilihan durasi 10/20/30 detik (otomatis dipecah per klip 10 detik), plus mode Topik Custom - buat template topikmu sendiri, tersimpan di akun (cloud sync)',
+                      en: 'New Video Prompt: livelier emotional storytelling scripts, 10/20/30-second duration options (auto-split into 10-second clips), plus Custom Topic mode - create your own topic templates, saved to your account (cloud sync)',
+                      ms: 'Prompt Video baharu: skrip penceritaan emosi yang lebih hidup, pilihan tempoh 10/20/30 saat (dipecah automatik per klip 10 saat), serta mod Topik Custom - cipta templat topik anda sendiri, disimpan dalam akaun (cloud sync)' },
+                ] },
                 { version: '2.3', date: '18 Sep 2026', changes: [
                     { id: 'Set baru "Panggung Seminar" + 2 scene berdiri pegang mic (bicara ke penonton) di tab Podcast/Studio',
                       en: 'New "Seminar Stage" set + 2 standing-with-mic scenes (speaking to the audience) in the Podcast/Studio tab',
