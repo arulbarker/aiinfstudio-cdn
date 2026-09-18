@@ -1280,7 +1280,7 @@
             // Set studio TERKUNCI (deskripsi identik tiap generate = feed konsisten seperti akun podcast profesional)
             const STUDIO_SETS = {
                 'dark-luxury': 'an aesthetic dark podcast studio: deep charcoal wall panels, warm amber practical lamps glowing softly, a dark wooden desk, a professional broadcast microphone on a boom arm in front of the person, subtle green plants and a softly lit bookshelf in the background, moody premium cinematic atmosphere',
-                'warm-cozy': 'a cozy warm podcast studio: warm wood slat wall, soft warm bulb lights and a table lamp, beige and brown tones, a wooden desk with a professional broadcast microphone on a boom arm in front of the person, inviting cinematic warm glow',
+                'warm-cozy': 'a warm aesthetic podcast studio: vertical wood slat wall panels with warm amber LED light strips glowing between them, lush green plants, a floating wooden shelf with books, decor and a small warm lamp, a dark wooden desk, a professional broadcast microphone on a boom arm beside the person, warm golden cozy glow',
                 'minimal-bright': 'a clean minimalist podcast studio: soft white and beige walls, gentle diffused daylight, a light wooden desk with a professional broadcast microphone on a boom arm in front of the person, airy premium editorial look',
                 'broadcast-neon': 'a modern broadcast studio: dark walls with subtle warm neon accent lighting strips, a sleek desk with a professional broadcast microphone on a boom arm in front of the person, premium late-night show atmosphere'
             };
@@ -2022,8 +2022,13 @@
             window.escHtml = function (s) {
                 return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
             };
-            window.APP_VERSION = '2.1';
+            window.APP_VERSION = '2.2';
             window.CHANGELOG = [
+                { version: '2.2', date: '18 Sep 2026', changes: [
+                    { id: 'Set studio "Hangat Cozy" dipertajam: panel kayu vertikal + strip lampu amber + tanaman & rak pajangan (gaya studio podcast Indonesia yang paling populer)',
+                      en: 'The "Warm Cozy" studio set is sharpened: vertical wood slats + amber light strips + plants & decor shelf (the most popular Indonesian podcast studio look)',
+                      ms: 'Set studio "Hangat Cozy" diperhalus: panel kayu menegak + jalur lampu amber + tumbuhan & rak hiasan (gaya studio podcast Indonesia paling popular)' },
+                ] },
                 { version: '2.1', date: '18 Sep 2026', changes: [
                     { id: 'Tab baru Religi / Ibadah: konten mukena estetik (baca Quran, doa, dzikir) dengan nuansa kamar pastel lembut - outfit mukena bisa diganti atau pakai foto produk',
                       en: 'New Faith / Worship tab: aesthetic mukena content (Quran reading, dua, dhikr) with soft pastel room mood - the mukena outfit can be changed or use product photos',
